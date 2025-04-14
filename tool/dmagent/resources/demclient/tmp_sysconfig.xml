@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file is generate by program, please do not change it!-->
+<root version="7.4.0"> 
+  <sysConfigss>
+    <sysConfig name="callback_ip">
+      <seq>1</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>127.0.0.1</val>
+      <desc>客户端工具回调DEM的IP地址,支持配置IPV6地址,应确保DEM所在主机能通过该IP访问到DEM自身</desc>
+    </sysConfig>
+    <sysConfig name="db_session_check_freq">
+      <seq>2</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>120</val>
+      <desc>客户端工具中的数据库连接有效性检查频率(秒)，最小值1</desc>
+    </sysConfig>
+    <sysConfig name="db_session_invalid_time">
+      <seq>3</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>1800</val>
+      <desc>客户端工具中的数据库连接的失效时间(秒)，最小值60</desc>
+    </sysConfig>
+    <sysConfig name="db_session_pool_count">
+      <seq>4</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>11</val>
+      <desc>用于管理所有用户的数据库会话的池大小(重启生效)</desc>
+    </sysConfig>
+    <sysConfig name="dem_page_size">
+      <seq>5</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>100</val>
+      <desc>前端页面中的表格分页时的页大小</desc>
+    </sysConfig>
+    <sysConfig name="dashboard_refresh_freq">
+      <seq>6</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>10</val>
+      <desc>联机大盘监测状态刷新频率(秒)，最小值1</desc>
+    </sysConfig>
+    <sysConfig name="dashboard_points">
+      <seq>7</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>30</val>
+      <desc>联机大盘页面中保留的监测次数，最小值1</desc>
+    </sysConfig>
+    <sysConfig name="dashboard_invisible_continue_refresh">
+      <seq>8</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>true</val>
+      <desc>(true/false)不显示的联机大盘页面是否继续刷新数据</desc>
+    </sysConfig>
+    <sysConfig name="deploy_dpc_bs">
+      <seq>9</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>true</val>
+      <desc>(true/false)集群搭建或集群维护时，DPC集群中新增的BP实例是否以BS模式启动</desc>
+    </sysConfig>
+    <sysConfig name="sql_prompts_update_interval">
+      <seq>10</seq>
+      <gname>1.客户端工具配置</gname>
+      <val>100</val>
+      <desc>SQL提示缓存更新间隔(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="dem_page_refresh_freq">
+      <seq>11</seq>
+      <gname>2.监控告警配置</gname>
+      <val>60</val>
+      <desc>资源监控页面状态自动刷新频率(秒)，最小值60</desc>
+    </sysConfig>
+    <sysConfig name="alert_his_re_notify_time">
+      <seq>12</seq>
+      <gname>2.监控告警配置</gname>
+      <val>600</val>
+      <desc>同一主机或数据库的同类警告在该时间间隔内不再重复发送(秒)，最小值600</desc>
+    </sysConfig>
+    <sysConfig name="alert_check_thread_count">
+      <seq>13</seq>
+      <gname>2.监控告警配置</gname>
+      <val>2</val>
+      <desc>监控告警监测任务线程数(重启生效)</desc>
+    </sysConfig>
+    <sysConfig name="alert_notify_thread_count">
+      <seq>14</seq>
+      <gname>2.监控告警配置</gname>
+      <val>2</val>
+      <desc>监控告警通知任务线程数(重启生效)</desc>
+    </sysConfig>
+    <sysConfig name="alert_rule_reload_freq">
+      <seq>15</seq>
+      <gname>2.监控告警配置</gname>
+      <val>60</val>
+      <desc>内存中告警规则缓存的刷新频率(秒)，最小值60</desc>
+    </sysConfig>
+    <sysConfig name="db_invalid_time">
+      <seq>16</seq>
+      <gname>2.监控告警配置</gname>
+      <val>300</val>
+      <desc>指定时间内没有收到数据库信息，则认为数据库失效(秒)，最小值120</desc>
+    </sysConfig>
+    <sysConfig name="mf_invalid_time">
+      <seq>17</seq>
+      <gname>2.监控告警配置</gname>
+      <val>180</val>
+      <desc>指定时间内没有收到主机信息，则认为主机失效(秒)，最小值20</desc>
+    </sysConfig>
+    <sysConfig name="process_invalid_time">
+      <seq>18</seq>
+      <gname>2.监控告警配置</gname>
+      <val>300</val>
+      <desc>指定时间内没有收到进程信息，则认为进程失效(秒)，最小值120</desc>
+    </sysConfig>
+    <sysConfig name="db_license_threshold">
+      <seq>19</seq>
+      <gname>2.监控告警配置</gname>
+      <val>100</val>
+      <desc>license信息到期告警提示阈值</desc>
+    </sysConfig>
+    <sysConfig name="db_sqllog_datasource">
+      <seq>20</seq>
+      <gname>2.监控告警配置</gname>
+      <val>0</val>
+      <desc>获取数据库SQL日志信息的后台表，0存放动态视图数据的后台表，1存放日志文件数据的后台表</desc>
+    </sysConfig>
+    <sysConfig name="db_sqllog_include_error_sql">
+      <seq>21</seq>
+      <gname>2.监控告警配置</gname>
+      <val>false</val>
+      <desc>(true/false)查看历史负载的SQL分析时，是否包含错误SQL的数据</desc>
+    </sysConfig>
+    <sysConfig name="message_token_validity">
+      <seq>22</seq>
+      <gname>2.监控告警配置</gname>
+      <val>300000</val>
+      <desc>远端agent发送消息的有效期(毫秒)，0表示不限制</desc>
+    </sysConfig>
+    <sysConfig name="gather_mf_info_freq">
+      <seq>23</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>主机基本信息收集频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_mf_stat_freq">
+      <seq>24</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集主机状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_mf_group_info_freq">
+      <seq>25</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集主机组基本信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_mf_group_stat_freq">
+      <seq>26</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集主机组状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_process_stat_freq">
+      <seq>27</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集进程状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_process_group_stat_freq">
+      <seq>28</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集进程组状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_info_freq">
+      <seq>29</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>数据库基本信息收集频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_stat_freq">
+      <seq>30</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_lock_freq">
+      <seq>31</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库锁信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_deadlock_freq">
+      <seq>32</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库死锁信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_trxwait_freq">
+      <seq>33</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库事务等待信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_event_freq">
+      <seq>34</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库事件信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_danger_event_freq">
+      <seq>35</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库重要事件信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_session_freq">
+      <seq>36</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库会话信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_tablespace_freq">
+      <seq>37</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[600]</val>
+      <desc>收集数据库表空间信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_user_freq">
+      <seq>38</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[600]</val>
+      <desc>收集数据库用户信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_table_freq">
+      <seq>39</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库表数据信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_audit_record_freq">
+      <seq>40</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[0]</val>
+      <desc>收集数据库审计记录的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_serverlog_freq">
+      <seq>41</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库运行日志记录的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_serverlog_distinct_enable">
+      <seq>42</seq>
+      <gname>3.监控频率配置</gname>
+      <val>true</val>
+      <desc>收集数据库运行日志记录是否去重，(true/false)</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_serverlog_infolevel_enable">
+      <seq>43</seq>
+      <gname>3.监控频率配置</gname>
+      <val>false</val>
+      <desc>收集数据库运行日志记录是否包含info级别，(true/false)</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_rlog_freq">
+      <seq>44</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库Redo日志信息的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_backup_freq">
+      <seq>45</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>执行数据库备份的检查频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_arch_freq">
+      <seq>46</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库归档信息的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_backupset_freq">
+      <seq>47</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库备份集信息的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_backupset_check_days">
+      <seq>48</seq>
+      <gname>3.监控频率配置</gname>
+      <val>3</val>
+      <desc>收集时校验最近多久的数据库备份集（天），0表示不校验</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_ini_file_freq">
+      <seq>49</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[180]</val>
+      <desc>收集数据库ini配置文件（如dm.ini,dmarch.ini）的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_freq">
+      <seq>50</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库SQL日志（日志文件）的频率（秒），最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_exectime">
+      <seq>51</seq>
+      <gname>3.监控频率配置</gname>
+      <val>0</val>
+      <desc>收集数据库SQL日志（日志文件）的最小执行耗时（毫秒），最小值0</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_buffer">
+      <seq>52</seq>
+      <gname>3.监控频率配置</gname>
+      <val>100</val>
+      <desc>收集数据库SQL日志（日志文件）的缓存大小，最小值100</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_param_record">
+      <seq>53</seq>
+      <gname>3.监控频率配置</gname>
+      <val>false</val>
+      <desc>(true/false)，收集数据库SQL日志（日志文件）时是否记录参数信息</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_param_stmt_count">
+      <seq>54</seq>
+      <gname>3.监控频率配置</gname>
+      <val>10000</val>
+      <desc>收集数据库SQL日志（日志文件）时带有参数的句柄缓存大小，最小值100</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_file_param_batch_count">
+      <seq>55</seq>
+      <gname>3.监控频率配置</gname>
+      <val>1</val>
+      <desc>收集数据库SQL日志（日志文件）时批量绑定参数时参数缓存大小，最小值1</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_view_freq">
+      <seq>56</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库SQL日志（动态视图）的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqllog_view_exectime">
+      <seq>57</seq>
+      <gname>3.监控频率配置</gname>
+      <val>0</val>
+      <desc>收集数据库SQL日志（动态视图）的最小执行耗时（毫秒），最小值0</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqlverify_enable">
+      <seq>58</seq>
+      <gname>3.监控频率配置</gname>
+      <val>false</val>
+      <desc>(true/false)，收集数据库SQL日志时是否审核，开启时必须配置SQL审核规则上下文</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_sqlverify_rule_context">
+      <seq>59</seq>
+      <gname>3.监控频率配置</gname>
+      <val></val>
+      <desc>收集数据库SQL日志时的SQL审核规则上下文</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_job_history_freq">
+      <seq>60</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库作业历史记录的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_index_freq">
+      <seq>61</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库索引信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_info_freq">
+      <seq>62</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集集群基本信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_stat_freq">
+      <seq>63</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库集群状态信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_dpc_sql_freq">
+      <seq>64</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集DPC集群SQL信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_dpc_sql_plan_freq">
+      <seq>65</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集DPC集群SQL计划信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_session_freq">
+      <seq>66</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集数据库集群会话信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_db_group_dpc_rw_stat_freq">
+      <seq>67</seq>
+      <gname>3.监控频率配置</gname>
+      <val>[60]</val>
+      <desc>收集DPC集群读写分离信息的频率(秒)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="gather_connection_pool_size">
+      <seq>68</seq>
+      <gname>3.监控频率配置</gname>
+      <val>50</val>
+      <desc>数据库连接池大小，值小于等于0时不启用连接池</desc>
+    </sysConfig>
+    <sysConfig name="gather_connection_life_time">
+      <seq>69</seq>
+      <gname>3.监控频率配置</gname>
+      <val>600</val>
+      <desc>(s)数据库连接池缓存的连接有效期</desc>
+    </sysConfig>
+    <sysConfig name="mail_enable">
+      <seq>70</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val>true</val>
+      <desc>(true/false),开启时需完成邮箱配置</desc>
+    </sysConfig>
+    <sysConfig name="mail_smtp_host">
+      <seq>71</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val></val>
+      <desc>SMTP服务器地址或者SMTP服务器地址:端口</desc>
+    </sysConfig>
+    <sysConfig name="mail_address">
+      <seq>72</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val></val>
+      <desc>系统邮箱地址</desc>
+    </sysConfig>
+    <sysConfig name="mail_account">
+      <seq>73</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val></val>
+      <desc>系统邮件账号，用于邮箱登录认证，未设置则使用系统邮箱地址作为系统邮件账号</desc>
+    </sysConfig>
+    <sysConfig name="mail_password">
+      <seq>74</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val>B415BC2BF36ADEF2</val>
+      <desc>系统邮箱密码，用于邮箱登录认证</desc>
+    </sysConfig>
+    <sysConfig name="mail_ssl">
+      <seq>75</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val>false</val>
+      <desc>(true/false),开启SSL加密,仅当mail_smtp_host中指定端口时有效</desc>
+    </sysConfig>
+    <sysConfig name="mail_config">
+      <seq>76</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val></val>
+      <desc>邮箱服务器连接配置属性,格式为key=value,多个以;间隔</desc>
+    </sysConfig>
+    <sysConfig name="mail_signature">
+      <seq>77</seq>
+      <gname>4.系统邮箱配置</gname>
+      <val>Dameng Database Develop Team</val>
+      <desc>系统邮件签名</desc>
+    </sysConfig>
+    <sysConfig name="custom_notify_enable">
+      <seq>78</seq>
+      <gname>5.自定义推送配置</gname>
+      <val>false</val>
+      <desc>(true/false)，开启时必须实现自定义推送功能</desc>
+    </sysConfig>
+    <sysConfig name="custom_notify_class">
+      <seq>79</seq>
+      <gname>5.自定义推送配置</gname>
+      <val></val>
+      <desc>自定义推送类,需实现接口com.dameng.dem.server.util.[INotify或IPhoneNotify]</desc>
+    </sysConfig>
+    <sysConfig name="user_login_limit_count">
+      <seq>80</seq>
+      <gname>6.安全配置</gname>
+      <val>5</val>
+      <desc>限制用户登录连续错误次数，若超过将锁定账号，最小值3</desc>
+    </sysConfig>
+    <sysConfig name="user_login_lock_time">
+      <seq>81</seq>
+      <gname>6.安全配置</gname>
+      <val>60</val>
+      <desc>账号锁定的时间(分钟)，最小值10</desc>
+    </sysConfig>
+    <sysConfig name="user_keep_alive_time">
+      <seq>82</seq>
+      <gname>6.安全配置</gname>
+      <val>0</val>
+      <desc>账户存活时间(秒)，最小值60，0表示不限制</desc>
+    </sysConfig>
+    <sysConfig name="audit">
+      <seq>83</seq>
+      <gname>6.安全配置</gname>
+      <val>0</val>
+      <desc>系统审计级别(0: 关闭; 1: SET; 2: GET和SET)</desc>
+    </sysConfig>
+    <sysConfig name="audit_flush_freq">
+      <seq>84</seq>
+      <gname>6.安全配置</gname>
+      <val>30</val>
+      <desc>审计信息刷盘频率(秒),最小值1</desc>
+    </sysConfig>
+    <sysConfig name="audit_parameter">
+      <seq>85</seq>
+      <gname>6.安全配置</gname>
+      <val>false</val>
+      <desc>(true/false), 审计是否记录http请求的参数信息</desc>
+    </sysConfig>
+    <sysConfig name="audit_sql">
+      <seq>86</seq>
+      <gname>6.安全配置</gname>
+      <val>false</val>
+      <desc>(true/false), 审计是否记录执行的sql语句</desc>
+    </sysConfig>
+    <sysConfig name="prometheus_metric_mf_nodes">
+      <seq>87</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>响应prometheus信息拉取请求的主机列表，以;间隔，信息拉取频率由prometheus自身配置</desc>
+    </sysConfig>
+    <sysConfig name="prometheus_metric_db_nodes">
+      <seq>88</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>响应prometheus信息拉取请求的数据库列表，以;间隔，信息拉取频率由prometheus自身配置</desc>
+    </sysConfig>
+    <sysConfig name="subscription_push_freq">
+      <seq>89</seq>
+      <gname>7.其他功能</gname>
+      <val>3600</val>
+      <desc>订阅推送频率(秒)，最小值600</desc>
+    </sysConfig>
+    <sysConfig name="subscription_sql_top">
+      <seq>90</seq>
+      <gname>7.其他功能</gname>
+      <val>10</val>
+      <desc>订阅信息包含高频SQL，慢SQL，错误SQL和死锁SQL数目，最大值20</desc>
+    </sysConfig>
+    <sysConfig name="auditrecord_receiver_address">
+      <seq>91</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>审计日志接收服务器地址，格式：IP:PORT</desc>
+    </sysConfig>
+    <sysConfig name="auditrecord_target_db">
+      <seq>92</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>发送目标数据库的审计日志</desc>
+    </sysConfig>
+    <sysConfig name="auditrecord_mark_config_path">
+      <seq>93</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>连接审计目标数据库所使用的密标配置文件路径</desc>
+    </sysConfig>
+    <sysConfig name="auditrecord_send_freq">
+      <seq>94</seq>
+      <gname>7.其他功能</gname>
+      <val>120</val>
+      <desc>审计日志发送频率(秒)，最小值为60</desc>
+    </sysConfig>
+    <sysConfig name="database_baseinfo_udp_send_freq">
+      <seq>95</seq>
+      <gname>7.其他功能</gname>
+      <val>60</val>
+      <desc>数据库基础信息的UDP协议发送频率(秒)，最小值为60</desc>
+    </sysConfig>
+    <sysConfig name="database_configinfo_udp_send_freq">
+      <seq>96</seq>
+      <gname>7.其他功能</gname>
+      <val>60</val>
+      <desc>数据库配置信息的UDP协议发送频率(秒)，最小值为60</desc>
+    </sysConfig>
+    <sysConfig name="database_statusinfo_udp_send_freq">
+      <seq>97</seq>
+      <gname>7.其他功能</gname>
+      <val>60</val>
+      <desc>数据库状态信息的UDP协议发送频率(秒)，最小值为60</desc>
+    </sysConfig>
+    <sysConfig name="database_info_udp_reciver_address">
+      <seq>98</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>数据库信息的UDP协议接收网络地址，格式：IP：PORT</desc>
+    </sysConfig>
+    <sysConfig name="database_info_udp_send_db_list">
+      <seq>99</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>数据库信息的UDP协议发送限定的数据库列表，列表项以;分隔</desc>
+    </sysConfig>
+    <sysConfig name="api_crypt_class">
+      <seq>100</seq>
+      <gname>7.其他功能</gname>
+      <val>com.dameng.dem.server.util.DefaultEncryptEngine</val>
+      <desc>实现接口com.dameng.dem.server.util.IEncryptEngine，用于用户密码的加解密</desc>
+    </sysConfig>
+    <sysConfig name="snmp_enable">
+      <seq>101</seq>
+      <gname>7.其他功能</gname>
+      <val>false</val>
+      <desc>(true/false)，开启时必须实现SNMP协议</desc>
+    </sysConfig>
+    <sysConfig name="snmp_udp_port">
+      <seq>102</seq>
+      <gname>7.其他功能</gname>
+      <val>161</val>
+      <desc>SNMP协议监听网络端口号</desc>
+    </sysConfig>
+    <sysConfig name="resource_package_storage_path">
+      <seq>103</seq>
+      <gname>7.其他功能</gname>
+      <val></val>
+      <desc>资源包存储路径(绝对路径)，默认为DEM应用内部路径repository/resource_pkg</desc>
+    </sysConfig>
+    <sysConfig name="service_key">
+      <seq>104</seq>
+      <gname>7.其他功能</gname>
+      <val>1628114E75763801</val>
+      <desc>远程RPC服务调用时所使用的校验key</desc>
+    </sysConfig>
+  </sysConfigss>
+</root>

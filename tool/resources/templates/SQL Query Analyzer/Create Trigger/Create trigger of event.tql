@@ -1,0 +1,13 @@
+-- =============================================
+-- 事件触发器
+-- =============================================
+
+CREATE TRIGGER <trigger_name, sysname, trig_test>
+<trigger_time, BEFORE|AFTER, BEFORE> <trigger_type, CREATE|ALTER|DROP,CREATE>
+ON <table_name, sysname, database>
+BEGIN
+	/*触发器体 */
+	print 'dm';
+END;
+
+

@@ -1,0 +1,10 @@
+-- =============================================
+-- Create view basic template
+-- =============================================
+
+
+CREATE VIEW <view_name, sysname, view_test>
+AS 
+	<select_statement, , SELECT * FROM authors>;
+
+

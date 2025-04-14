@@ -1,0 +1,8 @@
+;SpecialCopy definition, note: case sensitive!
+;<line_1> for first line
+;<line_*> for all other lines
+;<line_n> for last line
+
+'<line_1>' || chr(10) ||
+'<line_*>' || chr(10) ||
+'<line_n>';

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+PRG="$0"
+PRGDIR=`dirname "$PRG"`
+
+CURRENT_DIR=`pwd`
+cd "$PRGDIR/.."
+DM_HOME=`pwd`
+cd "$CURRENT_DIR"
+JAVA_HOME="$DM_HOME/jdk"
+TOOL_HOME="$DM_HOME/tool"
+TOOL_WORKSPACE="$TOOL_HOME/workspace"
+INSTALL_LANGUAGE=zh_CN
+
+LD_LIBRARY_PATH="$DM_HOME/bin:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH
+
+MALLOC_ARENA_MAX=4
+export MALLOC_ARENA_MAX
+
+"$JAVA_HOME/bin/java" -Xms256m -Xmx2048m -XX:+PerfDisableSharedMem -DDM_HOME="$DM_HOME" -Djava.library.path="$DM_HOME/bin" -Ddameng.log.file="$TOOL_HOME/log4j.xml" -Dosgi.nl="$INSTALL_LANGUAGE" -Duse_bak2=true -Dgrant_vti_role=false -Dapp.name=manager -jar "$TOOL_HOME/plugins/org.eclipse.equinox.launcher_1.1.1.R36x_v20101122_1400.jar" -os linux -ws gtk -arch x86_64 -showsplash "$TOOL_HOME/manager.bmp" -configuration "$TOOL_WORKSPACE/configuration/manager" -data "$TOOL_WORKSPACE/data/manager" -product com.dameng.manager.product -name Manager

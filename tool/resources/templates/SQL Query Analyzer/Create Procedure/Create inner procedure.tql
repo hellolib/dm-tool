@@ -1,0 +1,34 @@
+-- =============================================
+-- Create 内部procedure basic template
+-- =============================================
+-- creating the store procedure
+
+
+CREATE  PROCEDURE <inner_procedure_name, sysname,proc_test> 
+(
+	/*请填入参数, 参数的格式为<参数名>[<参数模式>]<参数类型> [:=|DEFAULT <表达式>] */
+	<@inner_pro_param1, sysname, p1> IN OUT <data_type_for_inner_pro_param1, , varchar(10)> DEFAULT '<inner_pro_default_value1, ,value1>',
+        <@inner_pro_param2, sysname, p2> IN OUT <data_type_for_inner_pro_param2, , varchar(10)> DEFAULT '<inner_pro_default_value2, ,value2>',
+	<@inner_pro_param3, sysname, p3> IN OUT <data_type_for_inner_pro_param3, , varchar(10)> DEFAULT '<inner_pro_default_value3, ,value3>'
+	
+)
+/*指明是否加密该存储过程的定义, 此处为可选*/
+/*WITH ENCRYPTION*/
+AS
+	/*变量说明部分*/
+  <inner_pro_VARNAME,sysname,V> <inner_pro_VAR_type, , int>;
+	
+BEGIN
+	/*执行体*/
+	print 'dm';
+END;
+
+
+
+-- =============================================
+-- example to execute the store procedure
+-- =============================================
+call <inner_procedure_name, sysname, proc_test> 
+(<inner_pro_default_value1, ,'value1'>,
+<inner_pro_default_value2, ,'value2'>,
+<inner_pro_default_value3, ,'value3'>);

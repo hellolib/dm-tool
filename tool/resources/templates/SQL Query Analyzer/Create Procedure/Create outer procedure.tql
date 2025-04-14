@@ -1,0 +1,16 @@
+-- =============================================
+-- 创建外部存储过程
+-- =============================================
+
+CREATE  PROCEDURE <outter_procedure_name, sysname, proc_test> 
+(
+  <@outter_procedure_param1, sysname, p1> <data_type_for_outter_procedure_param1, , varchar(10)> 
+) 
+EXTERNAL <outer_procedure_path, sysname, 'c:\dmdbms\'> <outer_pro_name, sysname,fun_name> 
+ USING <outer_function_type, sysname,SHLIB> ;
+
+
+-- =============================================
+-- example to execute the store procedure
+-- =============================================
+call <inner_procedure_name, sysname, proc_test> (<@outter_procedure_param1, sysname, p1>);

@@ -1,0 +1,4 @@
+-- =============================================
+-- alter user to login
+-- =============================================
+alter user <user_name, sysname, "test_user"> identified by <password, , "Test_user123">;

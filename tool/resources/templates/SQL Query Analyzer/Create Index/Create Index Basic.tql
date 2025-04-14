@@ -1,0 +1,9 @@
+-- =============================================
+-- Create index basic template
+-- =============================================
+
+CREATE INDEX  <index_name, sysname,ind_test>  ON <owner, sysname,SYSDBA>.<table_or_view_name, sysname,authors> 
+	(<index_column_1, sysname, au_lname>, 
+	 <index_column_2, sysname, au_fname>);
+
+

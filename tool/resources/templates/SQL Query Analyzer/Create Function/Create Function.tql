@@ -1,0 +1,31 @@
+-- =============================================
+-- Create function (IF)
+-- =============================================
+ CREATE OR REPLACE  FUNCTION  <inner_function_name, sysname, test_function>
+(
+	/*请填入参数, 参数的格式为<参数名>|[<参数模式>]|<参数类型> |:=|DEFAULT <表达式>|*/
+	<@inner_fun_param1, sysname, p1> IN OUT <data_type_for_inner_fun_param1, , varchar(10)> DEFAULT '<inner_fun_default_value1, ,value1>',
+	<@inner_fun_param2, sysname, p2> IN OUT <data_type_for_inner_fun_param2, , varchar(10)> DEFAULT '<inner_fun_default_value2, ,value2>',
+	<@inner_fun_param3, sysname, p3> IN OUT <data_type_for_inner_fun_param3, , varchar(10)> DEFAULT '<inner_fun_default_value3, ,value3>'
+)
+RETURN <inner_function_data_type, ,int>
+/*指明是否加密该函数的定义, 此处为可选*/
+/*WITH ENCRYPTION*/
+AS
+	/*变量说明部分*/
+	<inner_fun_VARNAME,sysname,var> <inner_fun_VAR_type, , int>;
+BEGIN
+	/*执行体*/
+	print 'dm';
+	RETURN <...>;
+END
+;
+-- =============================================
+-- Example to execute function
+-- =============================================
+SELECT  <inner_function_name, sysname, test_function>
+	(<inner_fun_default_value1, ,'value1'>,
+	 <inner_fun_default_value2, ,'value2'>,
+           <inner_fun_default_value3, ,'value3'>);
+
+

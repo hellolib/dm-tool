@@ -1,0 +1,6 @@
+-- =============================================
+-- revoke database access from user 
+-- =============================================
+revoke <database_access, ,INSERT> 
+on <table_or_view_name,sysname,test>
+from  <user_name, sysname, "test_user">;

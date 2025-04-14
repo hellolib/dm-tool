@@ -1,0 +1,6 @@
+-- =============================================
+-- create user
+-- =============================================
+create user <user_name, sysname, "test_user"> IDENTIFIED BY  <password, , "Test_user123"> ;
+
+

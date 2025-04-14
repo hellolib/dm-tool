@@ -1,0 +1,12 @@
+;SpecialCopy definition, note: case sensitive!
+;<line_1> for first line
+;<line_*> for all other lines
+;<line_n> for last line
+
+#define " = \"
+#define \ = \\
+#define char(9) = \t
+
+String("<line_1>\n") +
+String("<line_*>\n") + 
+String("<line_n>");

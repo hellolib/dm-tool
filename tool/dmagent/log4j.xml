@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+	<Properties>
+		<!-- 项目名称，同时也是日志文件的前缀 -->
+		<Property name="PROJECT_NAME" value="agent" />
+		<!-- 日志级别(ALL,TRACE,DEBUG,INFO,WARN,ERROR,FATAL,OFF) -->
+		<Property name="LOG_LEVEL" value="ERROR" />
+		<!-- 每份日志文件的最大体积，需要提供单位(B | KB | MB | GB 等) -->
+		<Property name="LOG_MAX_SIZE" value="100 MB" />
+		<!-- 每天日志最大份数，如果达到最大份数，当天较早的日志会被移除 -->
+		<Property name="LOG_MAX_COUNT" value="10" />
+		<!-- 备份日志最长保存时间（天） -->
+		<Property name="LOG_PRESERVE_DURATION" value="30" />
+		<!-- 日志保存目录 -->
+		<Property name="LOG_FILE_PATH" value="log" />
+		<!-- 日志前缀 -->
+		<Property name="LOG_PATTERN" value="[%-5p - %d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+	</Properties>
+
+	<Appenders>
+
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<ThresholdFilter level="ALL" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+
+		<RollingRandomAccessFile name="FILE"
+			append="true" immediateFlush="false" bufferSize="512"
+			fileName="${LOG_FILE_PATH}/${PROJECT_NAME}.log"
+			filePattern="${LOG_FILE_PATH}/${PROJECT_NAME}-%d{yyyy-MM-dd}-%i.log.gz"
+			filePermissions="rw-rw-rw-">
+			<ThresholdFilter level="ALL" />
+			<PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8" />
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true" interval="1" />
+				<SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}" />
+			</Policies>
+			<DefaultRolloverStrategy max="${LOG_MAX_COUNT}">
+				<Delete basePath="${LOG_FILE_PATH}" maxDepth="1">
+					<IfFileName glob="${PROJECT_NAME}*.log.gz" />
+					<IfLastModified age="${LOG_PRESERVE_DURATION}d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingRandomAccessFile>
+
+	</Appenders>
+
+	<Loggers>
+		<AsyncRoot level="${LOG_LEVEL}">
+			<AppenderRef ref="CONSOLE" />
+			<AppenderRef ref="FILE" />
+		</AsyncRoot>
+	</Loggers>
+</Configuration>

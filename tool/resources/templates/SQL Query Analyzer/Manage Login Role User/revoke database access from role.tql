@@ -1,0 +1,6 @@
+-- =============================================
+-- revoke database access from role 
+-- =============================================
+revoke <database_access, ,INSERT> 
+on <table_or_view_name,sysname,test>
+from  <role_name, sysname, "test_role">;

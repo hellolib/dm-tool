@@ -1,0 +1,7 @@
+-- =============================================
+-- grant database access to user with grant option
+-- =============================================
+grant <database_access, ,INSERT> 
+on <table_or_view_name,sysname,test>
+to  <user_name, sysname, "test_user">
+with grant option;

@@ -1,0 +1,16 @@
+-- =============================================
+-- 创建表触发器
+-- =============================================
+
+CREATE TRIGGER <trigger_name, sysname, trig_test>
+<trigger_time, BEFORE|AFTER|INSTEAD OF, BEFORE> <trigger_type, INSERT|DELETE|UPDATE,INSERT>
+ON <table_or_view_name, sysname, "SYSDBA"."sales">
+REFERENCING OLD ROW AS <old_row_name, sysname,"OLD"> 
+NEW ROW AS <old_row_name, sysname,"NEW"> 
+FOR EACH ROW
+BEGIN
+	/*触发器体*/
+	print 'dm';
+END;
+
+

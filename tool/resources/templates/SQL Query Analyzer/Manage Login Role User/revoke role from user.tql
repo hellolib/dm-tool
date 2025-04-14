@@ -1,0 +1,5 @@
+-- =============================================
+-- revoke role from user
+-- =============================================
+revoke <role_name, sysname, test_role>
+from  <user_name, sysname, "test_user">;

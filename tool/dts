@@ -1,0 +1,18 @@
+#!/bin/sh
+
+PRG="$0"
+PRGDIR=`dirname "$PRG"`
+
+CURRENT_DIR=`pwd`
+cd "$PRGDIR/.."
+DM_HOME=`pwd`
+cd "$CURRENT_DIR"
+JAVA_HOME="$DM_HOME/jdk"
+TOOL_HOME="$DM_HOME/tool"
+TOOL_WORKSPACE="$TOOL_HOME/workspace"
+INSTALL_LANGUAGE=zh_CN
+
+LD_LIBRARY_PATH="$DM_HOME/bin:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH
+
+"$JAVA_HOME/bin/java" -XX:+PerfDisableSharedMem -Djava.net.preferIPv4Stack=true -DDM_HOME="$DM_HOME" -Djava.library.path="$DM_HOME/bin" -Ddameng.log.file="$TOOL_HOME/log4j.xml" -Dosgi.nl="$INSTALL_LANGUAGE" -Ddameng.dts.drivers.dir="$TOOL_HOME/dropins/com.dameng/plugins/com.dameng.jdbc.drivers" -Dapp.name=dts -jar "$TOOL_HOME/plugins/org.eclipse.equinox.launcher_1.1.1.R36x_v20101122_1400.jar" -os linux -ws gtk -arch x86_64 -showsplash "$TOOL_HOME/dts.bmp" -configuration "$TOOL_WORKSPACE/configuration/dts" -data "$TOOL_WORKSPACE/data/dts" -product com.dameng.dts.product -name Dts

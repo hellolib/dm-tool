@@ -1,0 +1,5 @@
+-- =============================================
+-- revoke system access from user 
+-- =============================================
+revoke <system_access, ,CREATE ROLE> 
+from  <user_name, sysname, "test_user">;

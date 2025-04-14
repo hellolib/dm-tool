@@ -1,0 +1,8 @@
+-- =============================================
+-- Create index full syntax template
+-- =============================================
+CREATE UNIQUE INDEX <index_full_name, sysname, ind_test>
+ON <owner, sysname, SYSDBA>.<table_or_view_name,sysname,authors> 
+	(<index_full_column_1, sysname, au_lname> DESC, 
+	 <index_full_column_2, sysname, au_fname>);
+

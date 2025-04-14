@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench progressCount="1" version="2.0">
+<workbenchAdvisor/>
+<window height="768" maximized="true" width="1024" x="0" y="0">
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar/>
+<coolbarLayout locked="0">
+<coolItem id="file" itemType="typeToolBarContribution" x="78" y="41"/>
+<coolItem id="edit" itemType="typeToolBarContribution" x="174" y="41"/>
+<coolItem id="location" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="home" itemType="typeToolBarContribution" x="76" y="41"/>
+<coolItem id="debug" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="generate" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="terminal" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="com.dameng.manager.editor.HomeEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page focus="true" label="&lt;Unknown Label&gt; - DM数据迁移工具">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="com.dameng.tool.advisor.BaseWorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+</editors>
+<views>
+<view id="com.dameng.dts.rcp.view.navigator.DTSNavigator" partName="迁移管理">
+<viewState CommonNavigator.LINKING_ENABLED="0"/>
+</view>
+</views>
+<perspectives activePart="com.dameng.manager.editor.HomeEditor" activePerspective="com.dameng.dts.rcp.perspective.DTSPerspective">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="com.dameng.dts.rcp.perspective.DTSPerspective" id="com.dameng.dts.rcp.perspective.DTSPerspective" label="DM数据迁移工具"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="com.dameng.dts.rcp.view.navigator.DTSNavigator"/>
+<fastViewBars/>
+<layout>
+<mainWindow>
+<info folder="true" part="topLeft">
+<folder activePageID="com.dameng.dts.rcp.view.navigator.DTSNavigator" appearance="2" expanded="2">
+<page content="com.dameng.dts.rcp.view.navigator.DTSNavigator" label="迁移管理"/>
+<presentation id="com.dameng.tool.advisor.BaseWorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7495049" ratioLeft="757" ratioRight="253" relationship="2" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.3" ratioLeft="303" ratioRight="707" relationship="2" relative="topLeft"/>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+<trimItem IMemento.internal.id="com.dameng.tool.advisor.BaseHeapStatus"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList/>
+</workbench>

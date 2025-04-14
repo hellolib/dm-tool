@@ -1,0 +1,5 @@
+-- =============================================
+-- grant role type to role 
+-- =============================================
+grant <role_type, RESOURCE|DBA, "RESOURCE"> 
+to  <role_name, sysname, "test_role">;

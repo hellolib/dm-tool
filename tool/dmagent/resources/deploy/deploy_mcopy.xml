@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	此文件为dmagent命令行部署工具的配置文件模板，提供了一些常见的数据库集群配置方案
+	使用方法：start.bat/start.sh deploy copy_of_this_file.xml [-r]
+	此配置文件大小写敏感，请勿随意修改标签名、标签属性名
+-->
+<!--
+	Deploy:		根标签，所有的配置都在此标签内部
+	type:		集群类型，可选值 dpc | dsc | mpp | mcopy | dw_mpp | dw_realtime | dw_realtime_dsc | dw_timely | dw_timely_dsc
+	name:		部署名称，集群节点最终将部署在指定主机的工作目录下的${name}目录
+	archIni:	是否开启归档
+	remoteArch:	是否开启远程归档，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效
+	asmPassword: ASM登录密码，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效
+	sharedDisk:	是否存在裸/块设备的共享磁盘，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效
+	sharedDiskDirectory: 裸/块设备目录，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效
+	needCreateTs: 部署完成后是否需要为所有BP RAFT组创建默认混合表空间，仅 dpc 集群有效
+	autoRollbackOnFail: 部署过程中出错是否自动回滚，回滚动作包括停库，清空工作目录等
+-->
+<Deploy type="mcopy" name="dmmcopy1" autoRollbackOnFail="false">
+
+	<!-- Mainframes: 部署主机列表，内部可配置多个Mainframe -->
+	<Mainframes>
+		<!-- 
+			Mainframe:	部署主机，其上必须已经启动了dmagent(agent.ini配置文件中必须开启service_enable)
+			id:			主机标识，同一配置文件中的不同主机必须唯一
+			outerIP:	主机外网IP
+			port:		主机上的dmagent端口(agent.ini配置文件中的service_port)
+			innerIP:	主机内网IP
+			workingDirectory: 主机部署工作目录，集群节点最终将部署在该目录的${name}目录下
+			binPath:	主机上已存在的服务器执行码目录，若不指定，则使用<DmServers>中上传的服务器文件
+		-->
+		<Mainframe id="1" outerIP="192.168.2.9" port="6364" innerIP="192.168.2.9"
+			workingDirectory="D:\ztn\DMDEPLOY" binPath="D:\ztn\Debug_dpc" />
+		
+	</Mainframes>
+
+	<!--
+		Eps: 部署节点列表
+		initPort:			初始PORT_NUM，所有Ep的PORT_NUM将按照PORT_NUM、PORT_NUM+1、PORT_NUM+2 …… 这些连续递增端口依次进行初始化分配。
+							如果配置了initPort就不需要每个Ep单独配置port了，但如果Ep中单独配置了port，则单独配置的port优先
+		initMalPort:		初始MAL_PORT，仅 mpp | dsc | dw_* 集群有效，使用规则同initPort
+		initMalInstDwPort:	初始MAL_INST_DW_PORT，仅 dw_* 集群有效，使用规则同initPort
+		initMalDwPort:		初始MAL_DW_PORT，仅 dw_* 集群有效，使用规则同initPort
+		initMpPort:			MP节点初始PORT_NUM，仅 dpc 集群有效，使用规则同initPort
+		initMpApPort:		MP节点初始AP_PORT，仅 dpc 集群有效，使用规则同initPort
+		initMpMpPort:		MP节点初始MP_PORT，仅 dpc 集群有效，使用规则同initPort
+		initSpPort:			SP节点初始PORT_NUM，仅 dpc 集群有效，使用规则同initPort
+		initSpApPort:		SP节点初始AP_PORT_NUM，仅 dpc 集群有效，使用规则同initPort
+		initBpPort:			BP节点初始PORT_NUM，仅 dpc 集群有效，使用规则同initPort
+		initBpApPort:		BP节点初始AP_PORT_NUM，仅 dpc 集群有效，使用规则同initPort
+		initXmalPort:		初始XMAL_PORT，仅 mcopy 集群有效，使用规则同initPort
+		initAsmMalPort:		初始ASM_MAL_PORT，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效，使用规则同initPort
+		initAsmDcrEpPort:	初始ASM_DCR_EP_PORT，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效，使用规则同initPort
+		initCssDcrEpPort:	初始CSS_DCR_EP_PORT，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效，使用规则同initPort
+		initDcrCheckPort:	初始DCR_CHECK_PORT，仅 dsc | dw_realtime_dsc | dw_timely_dsc 集群有效，使用规则同initPort
+	-->
+	<Eps initPort="9236" initXmalPort="10007">
+
+		<!-- 
+			InitParamTemplate: 初始化库参数模板,可在各个Ep下的<DmInit>标签中使用@DmInitTemplate进行引用,包括但不限于以下参数:
+			EXTENT_SIZE: 簇大小			PAGE_SIZE: 页大小		LOG_SIZE: 日志文件大小		TIME_ZONE: 时区
+			PAGE_CHECK: 启用页面检查		CHARSET: 字符集		USBKEY_PIN: USBKEY PIN	CASE_SENSITIVE: 大小写敏感
+			BLANK_PAD_MODE: 空格填充模式	LENGTH_IN_CHAR: VARCHAR类型以字符为单位			
+			USE_NEW_HASH: 改进的字符串Hash算法					ENCRYPT_NAME: 全库加密算法名
+			SYSDBA_PWD: SYSDBA用户口令				SYSAUDITOR_PWD: SYSAUDITOR用户口令
+			<以下参数仅在安全版中可设置>
+			PRIV_FLAG: 是否四权分立		SYSSSO_PWD: SYSSSO用户口令		SYSDBO_PWD: SYSDBO用户口令
+		-->
+		<InitParamTemplate>
+			EXTENT_SIZE=16
+			PAGE_SIZE=8
+			LOG_SIZE=256
+			TIME_ZONE=+08:00
+			PAGE_CHECK=0
+			CHARSET=0
+			USBKEY_PIN=
+			CASE_SENSITIVE=1
+			BLANK_PAD_MODE=0
+			LENGTH_IN_CHAR=0
+			USE_NEW_HASH=1
+			SYSDBA_PWD=
+			SYSAUDITOR_PWD=
+		</InitParamTemplate>
+
+		<!-- 库配置文件dm.ini参数模板，可改写dm.ini中任意合法参数，可在各个Ep下的<DmIni>标签中使用@DmIniTemplate进行引用 -->
+		<DmIniTemplate>
+			BUFFER=200
+		</DmIniTemplate>
+
+		<!-- 库归档文件dmarch.ini参数模板，仅支持以下参数的配置，可在各个Ep(BP)下的<DmArchIni>标签中使用@DmArchIniTemplate进行引用。 
+			raft归档将由程序自动生成；若LOCAL_ARCH_DEST为空，则由程序自动填充 -->
+		<DmArchIniTemplate>
+			ARCH_RESERVE_TIME=0
+			XMAL_HB_INTERVAL=5
+			RAFT_HB_INTERVAL=150
+			RAFT_VOTE_INTERVAL=1000
+			RAFT_SELF_ID=
+
+			LOCAL_ARCH_DEST=
+			LOCAL_ARCH_FILE_SIZE=128
+			LOCAL_ARCH_SPACE_LIMIT=0
+			LOCAL_ARCH_FLUSH_BUF_SIZE=0
+		</DmArchIniTemplate>
+
+		<!-- 
+			Ep:				部署实例节点
+			mainframeID:	通过id指定部署该节点的主机，必须为<Mainframes>中配置的主机
+			workingDirectory: 节点部署的工作目录，缺省值为部署该节点的主机的工作目录
+			type:			节点类型，可选值 MP | SP | BP | MCOPY | DSC | PRIMARY | STANDBY_MPP
+							| STANDBY_REALTIME | STANDBY_TIMELY | STANDBY_ASYNC | CSSM | MONITOR
+			name:			实例名，如果未配置，则由节点类型+序号自动生成
+			port:			PORT_NUM，如果未配置，则由<Eps>中的initPort生成；
+							在DPC集群中，由<Eps>中的initMpPort/initSpPort/initBpPort生成
+			malHost:		MAL_HOST，如果未配置，则使用该节点所在主机的innerIP
+			malPort:		MAL_PORT，如果未配置，则由<Eps>中的initMalPort生成
+			malInstHost:	MAL_INST_HOST，如果未配置，则使用该节点所在主机的outerIP
+			malInstDwPort:	MAL_INST_DW_PORT，如果未配置，则由<Eps>中的initMalInstDwPort生成
+			malDwPort:		MAL_DW_PORT，如果未配置，则由<Eps>中的initMalDwPort生成
+			apPort:			AP_PORT_NUM，如果未配置，则由<Eps>中的initMpApPort/initSpApPort/initBpApPort生成
+			mpPort:			MP_PORT，如果未配置，则由<Eps>中的initMpMpPort生成
+			xmalHost:		用于XMAL通信的内网地址，仅 mcopy | dpc 集群有效
+			xmalPort:		XMAL_PORT，如果未配置，则由<Eps>中的initXmalPort生成
+			asmMalPort:		ASM_MAL_PORT，如果未配置，则由<Eps>中的initAsmMalPort生成
+			asmDcrEpPort:	ASM_DCR_EP_PORT，如果未配置，则由<Eps>中的initAsmDcrEpPort生成
+			cssDcrEpPort:	CSS_DCR_EP_PORT，如果未配置，则由<Eps>中的initCssDcrEpPort生成
+			dcrCheckPort:	DCR_CHECK_PORT，如果未配置，则由<Eps>中的initDcrCheckPort生成
+			dcrEpShmKey:	DCR_EP_SHM_KEY，不配置则为随机值，仅 DSC 节点有效
+			dcrEpShmSize:	DCR_EP_SHM_SIZE，不配置则为10，仅 DSC 节点有效
+			raft:			RAFT组名，仅 SP | BP 节点有效
+			bpGrp:			BP组名，仅 BP 节点有效
+			hostEpName:		异步备库的源库实例名，仅 STANDBY_ASYNC 节点有效
+			timer:			定时器名称，仅 STANDBY_ASYNC 节点有效
+			enable:			是否部署监视器，仅 CSSM | MONITOR 节点有效
+			needStart:		是否启动监视器，仅 CSSM | MONITOR 节点有效
+			dwConfirm:		监视器模式，取值0/1，0-监控模式，1-确认模式，仅 MONITOR 节点有效
+			logPath:		日志文件路径，仅 CSSM | MONITOR 节点有效
+			logInterval:	记录日志时间间隔，取值0/1/5~3600，单位秒，仅 MONITOR 节点有效
+			logFileSize:	单个日志文件大小，取值16~2048，单位MB，仅 CSSM | MONITOR 节点有效
+			logSpaceLimit:	日志总空间大小，取值0/256~4096，单位MB，仅 CSSM | MONITOR 节点有效
+		-->
+		<Ep mainframeID="1" type="MCOPY" port="8236" xmalPort="10007">
+			<!-- 初始化库参数,可使用@InitParamTemplate引用<InitParamTemplate>标签中的内容并在其后追加或覆盖参数,也可单独配置参数 -->
+			<InitParam>
+				@InitParamTemplate
+			</InitParam>
+			<!-- 库配置文件dm.ini参数,可使用@DmIniTemplate引用<DmInit>标签中的内容并在其后追加或覆盖参数，也可单独配置参数 -->
+			<DmIni>
+				@DmIniTemplate
+				BUFFER=100
+			</DmIni>
+			<DmArchIni>
+				@DmArchIniTemplate
+			</DmArchIni>
+		</Ep>
+		<Ep mainframeID="1" type="MCOPY" port="8237" xmalPort="10008">
+			<InitParam>
+				@InitParamTemplate
+			</InitParam>
+			<DmIni>
+				@DmIniTemplate
+			</DmIni>
+			<DmArchIni>
+				@DmArchIniTemplate
+				RAFT_VOTE_INTERVAL=2000
+			</DmArchIni>
+		</Ep>
+		<Ep mainframeID="1" type="MCOPY" port="8238" xmalPort="10009">
+			<InitParam>
+				@InitParamTemplate
+			</InitParam>
+			<DmIni>
+				@DmIniTemplate
+			</DmIni>
+			<DmArchIni>
+				@DmArchIniTemplate
+				RAFT_VOTE_INTERVAL=3000
+			</DmArchIni>
+		</Ep>
+	</Eps>
+	
+	<!--
+		Service:	注册系统服务相关配置
+		enable:		是否注册系统服务，远程dmagent代理需要有系统管理员权限
+		
+		DmServiceInfix:			DMSERVER脚本中缀名，最终脚本名为：DmService_${DmServiceInfix}_${实例名}，默认为空
+		DmAPServicePostfix:		DMAP脚本后缀名，最终脚本名为：DmAPService_${DmAPServicePostfix}，默认为部署名称
+		DmWatcherServiceInfix:	DMWATCHER脚本中缀名，最终脚本名为：DmWatcherService_${DmWatcherServiceInfix}_${实例名}，默认为空
+		DmMonitorServicePostfix: DMMONITOR脚本后缀名，最终脚本名为：DmMonitorService_${DmMonitorServicePostfix}，默认为部署名称
+		DmMPServiceInfix:		DMSERVER(MP)脚本中缀名，最终脚本名为：DmService_${DmMPServiceInfix}_${实例名}，默认为空
+		DmSPServiceInfix:		DMSERVER(SP)脚本中缀名，最终脚本名为：DmService_${DmSPServiceInfix}_${实例名}，默认为空
+		DmBPServiceInfix:		DMSERVER(BP)脚本中缀名，最终脚本名为：DmService_${DmBPServiceInfix}_${实例名}，默认为空
+		DmCSSServiceInfix:		DMCSS脚本中缀名，最终脚本名为：DmCSSService_${DmCSSServiceInfix}_${实例名}，默认为空
+		DmASMServiceInfix:		DMASM脚本中缀名，最终脚本名为：DmASMSvrService_${DmASMServiceInfix}_${实例名}，默认为空
+		DmCSSMServicePostfix:	DMCSSM脚本后缀名，最终脚本名为：DmCSSMonitorService_${DmCSSMServicePostfix}，默认为部署名称
+	-->
+	<Service enable="false">
+		DmServiceInfix=
+		DmAPServicePostfix=
+		DmWatcherServiceInfix=
+		DmMonitorServicePostfix=
+		DmMPServiceInfix=
+		DmSPServiceInfix=
+		DmBPServiceInfix=
+		DmCSSServiceInfix=
+		DmASMServiceInfix=
+		DmCSSMServicePostfix=
+	</Service>
+
+	<!-- DmKey: dm.key文件的路径，每个Ep初始化都使用此key文件 -->
+	<DmKey></DmKey>
+	
+	<!--
+		SSL:		在连接数据库时，使用指定的SSL密钥文件开启SSL通讯加密
+		fileDir:	SYSDBA用户的密钥文件所在目录，用于填充JDBC连接串的sslFilesPath属性
+		password:	密钥文件的密码，用户填充JDBC连接串的sslKeystorePass属性
+	-->
+	<SSL fileDir="" password="" />
+
+	<!-- DmServers: 上传的服务器文件，若<Mainframe>未指定binPath，则将此服务器文件上传至目标主机以执行部署，内部可配置多个DmServer -->
+	<DmServers>
+		<!--
+			DmServer:		达梦服务器文件
+			mainframeID:	通过id指定该服务器文件要上传的主机，必须为<Mainframes>中配置的主机
+			osType:			通过操作系统类型指定该服务器文件要上传的主机，可选值 WIN | LINUX，若指定了mainframeID，则osType无效
+			file:			达梦服务器执行码zip压缩文件路径
+		-->
+		<DmServer mainframeID="1" file="E:\dpc\x64\Debug.zip" />
+		
+		<!-- <DmServer osType="WIN" file="E:\dpc\x64\Debug.zip" /> -->
+	</DmServers>
+</Deploy>

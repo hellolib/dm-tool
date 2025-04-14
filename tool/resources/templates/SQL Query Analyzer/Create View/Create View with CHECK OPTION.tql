@@ -1,0 +1,11 @@
+-- =============================================
+-- Create view with CHECK OPTION 
+-- =============================================
+
+
+CREATE VIEW <view_name, sysname, view_test>
+AS 
+	<select_statement, , SELECT * FROM authors>
+WITH CHECK OPTION;
+
+

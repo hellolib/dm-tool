@@ -1,0 +1,5 @@
+-- =============================================
+-- grant role to user
+-- =============================================
+grant <role_name, sysname, test_role> 
+to  <user_name, sysname, "test_user">;

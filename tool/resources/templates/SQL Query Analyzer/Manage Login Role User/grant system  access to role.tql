@@ -1,0 +1,5 @@
+-- =============================================
+-- grant system access to role 
+-- =============================================
+grant <system_access, ,CREATE ROLE> 
+to  <role_name, sysname, "test_role">;

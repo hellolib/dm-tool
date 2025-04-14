@@ -1,0 +1,13 @@
+-- =============================================
+-- 时间触发器
+-- =============================================
+
+CREATE TRIGGER <trigger_name, sysname, trig_test> AFTER TIMER 
+ON <obj_name, sysname, database>
+FOR ONCE AT DATETIME <time_exp, , '2011-11-24 17:49:07'> 
+BEGIN
+	/*触发器体 */
+	print 'dm';
+END;
+
+

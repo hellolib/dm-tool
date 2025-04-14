@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TEST>
+	<BUILD>
+		<IP>192.168.100.114</IP>
+		<DIR>/data/ssd/lyn/agent_test</DIR>
+		<MODULES></MODULES>
+		<SVNURL>http://192.168.1.200/svn/dm7src3/trunc</SVNURL>
+		<SVNUSER>liyanan</SVNUSER>
+		<SVNPWD>liyanan</SVNPWD>
+		<SVNNUMBER>128258</SVNNUMBER>
+		<DEBUGRELEASE>release</DEBUGRELEASE>
+	</BUILD>
+</TEST>

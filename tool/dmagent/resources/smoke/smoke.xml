@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SMOKE>
+	<DB>
+		<ID>TEST</ID>
+		<DRIVER>dm.jdbc.driver.DmDriver</DRIVER>
+		<URL>jdbc:dm://192.168.100.122:8989</URL>
+		<SERVER>192.168.100.122</SERVER>
+		<PORT>8989</PORT>
+		<UID>SYSDBA</UID>
+		<PWD>SYSDBA</PWD>
+	</DB>
+	<DB>
+		<ID>ONLINE</ID>
+		<DRIVER>dm.jdbc.driver.DmDriver</DRIVER>
+		<URL>jdbc:localhost:5236</URL>
+		<SERVER>localhost</SERVER>
+		<PORT>5236</PORT>
+		<UID>SYSDBA</UID>
+		<PWD>SYSDBA</PWD>
+	</DB>
+
+	<SERVER0>localhost</SERVER0>
+	<PORT0>5236</PORT0>
+	<SERVER1>localhost</SERVER1>
+	<PORT1>5236</PORT1>
+	<SERVER2>localhost</SERVER2>
+	<PORT2>5236</PORT2>
+	<SERVER3>localhost</SERVER3>
+	<PORT3>5236</PORT3>
+	<SERVER4>localhost</SERVER4>
+	<PORT4>5236</PORT4>
+	<SERVER5>localhost</SERVER5>
+	<PORT5>5236</PORT5>
+	<SERVER6>localhost</SERVER6>
+	<PORT6>5236</PORT6>
+	<SERVER7>localhost</SERVER7>
+	<PORT7>5236</PORT7>
+	<SERVER8>localhost</SERVER8>
+	<PORT8>5236</PORT8>
+	<SERVER9>localhost</SERVER9>
+	<PORT9>5236</PORT9>
+
+	<AUTOCOMMIT>false</AUTOCOMMIT>	<!-- SQL语句是否自动提交 -->
+	<INITGEO>false</INITGEO>		<!-- 初始化geo包 -->
+	<ISLINUXOS>true</ISLINUXOS>		<!-- 待测dmserver是否在Linux -->
+	<MAXCONNNUM>20</MAXCONNNUM>		<!-- 一个测试用例支持的最大连接数 -->
+	<MAXTIMEOUT>900</MAXTIMEOUT>	<!-- 最大超时检测时间，单位为second。当xml脚本中设置的timeout大于MAXTIMEOUT，采用MAXTIMEOUT -->
+	<NEWLOG>false</NEWLOG>			<!-- 是否生成新的log文件。如果设为true，那么以当前时间为名生成log目录。否则，覆盖log/current目录下的日志文件，方便调试 -->
+	<SCRIPTFILEDIR>F:\testroot\for_dmserver\proc</SCRIPTFILEDIR> <!-- SQLFILE标签所调用的sql文件目录 -->
+	<SQLLOG>true</SQLLOG>			<!-- 是否将所有执行的sql记录在sql log中，如果设为false，那么仅保留最后一个测试用例的sql -->
+	<TIMEOUT>60</TIMEOUT>			<!-- 超时检测时间，单位为second -->
+	<TIMEOUTCNT>5</TIMEOUTCNT>		<!-- 一个测试用例中，允许最多的超时数目。当达到次数限制后，该测试用例执行终止 -->
+
+
+	<!-- 增加按照TYPE修改SQL的参数，以方便测试MPP等特定功能 -->
+	<CONVERTSQL>false</CONVERTSQL> <!-- 如果想启用这个功能就设置为true,否则设置为false -->
+	<SQLTYPE>0</SQLTYPE> <!-- 参见同目录下的sqltype.txt -->
+	
+</SMOKE>

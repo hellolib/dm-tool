@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file is generate by program, please do not change it!-->
+<root version="7.4.0"> 
+  <groups>
+    <group id="288826659945069819" name="DPC">
+      <public>false</public>
+      <type>DPC</type>
+      <desc></desc>
+      <freqConfig></freqConfig>
+    </group>
+  </groups>
+  <databases>
+    <database id="144481103526554317" name="192.168.100.163:16363">
+      <public>false</public>
+      <type>DB</type>
+      <mainframe>72238661574045107</mainframe>
+      <outerIp>192.168.100.163</outerIp>
+      <innerIp>192.168.100.163</innerIp>
+      <port>16363</port>
+      <userName>SYSDBA</userName>
+      <password encrypt="true">F1A54AF6DA530F3F</password>
+      <parameters></parameters>
+      <serviceName></serviceName>
+      <startParameter></startParameter>
+      <backupSearchPath></backupSearchPath>
+      <autoRestart>false</autoRestart>
+      <desc></desc>
+      <freqConfig></freqConfig>
+    </database>
+    <database id="144711471920528948" name="192.168.100.163:5230">
+      <public>false</public>
+      <type>SP</type>
+      <mainframe>72238661574045107</mainframe>
+      <outerIp>192.168.100.163</outerIp>
+      <innerIp>192.168.100.163</innerIp>
+      <port>5230</port>
+      <userName>SYSDBA</userName>
+      <password encrypt="true">F1A54AF6DA530F3F</password>
+      <parameters></parameters>
+      <serviceName></serviceName>
+      <startParameter>/home/test/ch/DPC/dmdpc/SP1/bin/DmServiceSP1.sh start</startParameter>
+      <backupSearchPath></backupSearchPath>
+      <autoRestart>false</autoRestart>
+      <desc></desc>
+      <freqConfig></freqConfig>
+      <groupId>288826659945069819</groupId>
+    </database>
+    <database id="144711471950792149" name="192.168.100.163:5220">
+      <public>false</public>
+      <type>MP</type>
+      <mainframe>72238661574045107</mainframe>
+      <outerIp>192.168.100.163</outerIp>
+      <innerIp>192.168.100.163</innerIp>
+      <port>5220</port>
+      <userName>SYSDBA</userName>
+      <password encrypt="true">F1A54AF6DA530F3F</password>
+      <parameters></parameters>
+      <serviceName></serviceName>
+      <startParameter>/home/test/ch/DPC/dmdpc/MP_A/bin/DmServiceMP_A.sh start</startParameter>
+      <backupSearchPath></backupSearchPath>
+      <autoRestart>false</autoRestart>
+      <desc></desc>
+      <freqConfig></freqConfig>
+      <groupId>288826659945069819</groupId>
+    </database>
+    <database id="144711471976363350" name="192.168.100.163:5240">
+      <public>false</public>
+      <type>BS</type>
+      <mainframe>72238661574045107</mainframe>
+      <outerIp>192.168.100.163</outerIp>
+      <innerIp>192.168.100.163</innerIp>
+      <port>5240</port>
+      <userName>SYSDBA</userName>
+      <password encrypt="true">F1A54AF6DA530F3F</password>
+      <parameters></parameters>
+      <serviceName></serviceName>
+      <startParameter>/home/test/ch/DPC/dmdpc/BP1_A/bin/DmServiceBP1_A.sh start</startParameter>
+      <backupSearchPath></backupSearchPath>
+      <autoRestart>false</autoRestart>
+      <desc></desc>
+      <freqConfig></freqConfig>
+      <groupId>288826659945069819</groupId>
+    </database>
+  </databases>
+</root>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    此文件为dmagent命令行部署工具的配置文件模板，提供了一些常见的数据库集群配置方案
+    使用方法: start.bat/start.sh deploy copy_of_this_file.xml [-r]
+    此配置文件大小写敏感，请勿随意修改标签名、标签属性名
+-->
+
+<!--
+    <Deploy>:               根标签，所有的配置都在此标签内部
+    deployType:             操作类型，可选值 deploy | redeploy | undeploy | startstop | inimodify
+    type:                   集群类型，可选值 dpc | dsc | mpp | mcopy | dw_mpp | dw_realtime | dw_realtime_dsc | dw_timely | dw_timely_dsc
+    name:                   部署名称，集群节点最终将部署在指定主机的工作目录下的${name}目录
+    archIni:                是否开启归档
+    independentBin:         是否使用独立执行码，仅 dpc | mcopy 集群有效
+    autoRollbackOnFail:     部署过程中出错是否自动回滚，回滚动作包括停库，清空工作目录等
+
+    DPC集群专属属性:
+        bpAsBs:     BP节点是否部署为BS模式，仅 dpc 集群有效
+        needCreateTs: 部署完成后是否需要为所有BP RAFT组创建默认混合表空间，仅 dpc 集群有效
+-->
+<Deploy deployType="redeploy" type="dpc" clusterId="288232074347712392" name="dmdpc" archIni="true" independentBin="false" 
+    autoRollbackOnFail="false" needCreateTs="false" bpAsBs="true">
+
+    <!-- <Mainframes>: 部署主机列表，内部可配置多个<Mainframe> -->
+    <Mainframes>
+        <!--
+            <Mainframe>:        部署主机，其上必须已经启动了dmagent(agent.ini配置文件中必须开启service_enable)
+            id:                 主机标识，同一配置文件中的不同主机必须唯一
+            name:               主机名称
+            outerIP:            主机外网IP
+            innerIP:            主机内网IP
+            ipList:             主机IP列表
+            port:               主机上的dmagent端口(agent.ini配置文件中的service_port)
+            osName:             主机操作系统类型
+            workingDirectory:   主机部署工作目录，集群节点最终将部署在该目录的${name}目录下
+            needBin:            主机是否需要服务器执行码，删除节点时不需要使用执行码
+            binPath:            主机上已存在的服务器执行码目录，若不指定，则使用<DmServers>中上传的服务器文件
+        -->
+        <Mainframe id="72313097870422812" name="test162" outerIP="192.168.100.162" innerIP="192.168.100.162" 
+            ipList="192.168.122.1/192.168.101.162/192.168.100.162" port="7664" osName="Linux" 
+            workingDirectory="/DMDeploy" needBin="false"/>
+    </Mainframes>
+
+    <!--
+        <Dmap>:             DMAP进程，联机备份可使用DMAP进程辅助备份
+        bakUseAp:           (本次维护)是否使用DMAP进程辅助联机备份
+        apPort:             (本次维护)DMAP进程监听端口
+    -->
+    <Dmap bakUseAp="true" apPort="4236"/>
+
+    <MoveTablespaceBeforeDelete/>
+
+    <MoveTablespaceAfterAdd/>
+
+    <!-- 
+        InitParamTemplate: 初始化库参数模板,可在各个Ep下的<DmInit>标签中使用@DmInitTemplate进行引用,包括但不限于以下参数:
+            EXTENT_SIZE:        簇大小
+            PAGE_SIZE:          页大小
+            LOG_SIZE:           日志文件大小
+            TIME_ZONE:          时区
+            PAGE_CHECK:         启用页面检查
+            CHARSET:            字符集
+            USBKEY_PIN:         USBKEY PIN
+            CASE_SENSITIVE:     大小写敏感
+            BLANK_PAD_MODE:     空格填充模式
+            LENGTH_IN_CHAR:     VARCHAR类型以字符为单位
+            USE_NEW_HASH:       改进的字符串Hash算法
+            ENCRYPT_NAME:       全库加密算法名
+            SYSDBA_PWD:         SYSDBA用户口令
+            SYSAUDITOR_PWD:     SYSAUDITOR用户口令
+        <以下参数仅在安全版中可设置>
+            PRIV_FLAG:          是否四权分立
+            SYSSSO_PWD:         SYSSSO用户口令
+            SYSDBO_PWD:         SYSDBO用户口令
+    -->
+    <InitParamTemplate/>
+
+    <!-- 库配置文件dm.ini参数模板，不可设置INSTANCE_NAME和PORT_NUM，在各个EP下的<DMINI>可以使用@DmIniTemplate进行引用 -->
+    <DmIniTemplate/>
+
+    <!-- 库归档文件dmarch.ini参数模板，仅支持以下参数的配置，可在各个Ep下的<DmArchIni>标签中使用@DmArchIniTemplate进行引用。 
+            若LOCAL_ARCH_DEST为空，由程序自动填充 -->
+    <DmArchIniTemplate/>
+
+    <!--
+        <Raft>:     集群的RAFT组
+        name:       RAFT组名
+        operation:  集群维护对RFAT组的操作，可选值 
+                        NULL:无操作 
+                        NEW:新增RAFT组
+                        DEL:删除RAFT组
+                        REBUILD:重建RAFT组（重建RFAT组内若干节点）
+                        SHADOW:影实转换RAFT组（影实转换RAFT组内若干节点）
+                        ADJUST:调整RAFT组（向RAFT组内新增节点、删除节点）
+                        UPGRADE:升级RAFT组
+                        DEGRADE:降级RAFT组
+                        SWITCH:主备切换RAFT组
+    -->
+    <Raft name="MP_RAFT" operation="">
+        <!-- <DbUrls>: RAFT组内不直接参与维护的节点JDBC连接串信息，内部可配置多个<DbUrl>，维护操作需要用到主库，标记当前的主库，保存全部节点防止主备切换 -->
+        <DbUrls>
+            <!--
+                <PrimaryUrl>:   主库的JDBC连接串信息
+                <DbUrl>:        备库的JDBC连接串信息
+                name:           节点实例名
+                type:           节点类型，可选值 SP | MP | BP
+                outerIP:        节点外网IP
+                port:           节点监听端口
+                userName:       节点登录连接用户名，加密保存
+                password:       节点登录连接密码，加密保存
+            -->
+            <PrimaryUrl name="MP_A" type="MP" outerIP="192.168.100.162" port="2220" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="MP_B" type="MP" outerIP="192.168.100.162" port="2221" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="MP_C" type="MP" outerIP="192.168.100.162" port="2222" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+
+        <!--
+            <BackupsetSource>:  备份集来源，重建RAFT组、影实转换RAFT组、调整RAFT组、升级RAFT组时需要配置
+            type:               备份方式，可选值 ONLINE | REMOTE | OFFLINE | UPLOAD | NULL
+
+            ONLINE联机备份
+                agentOuterIP:   来源数据库所在主机Agent外网IP
+                agentPort:      来源数据库所在主机Agent服务端口
+                binPath:        来源数据库所在主机的执行码目录
+                dbName:         来源数据库实例名
+                backupParams:   联机备份语句参数
+                shareFolder:    是否备份到共享目录
+                sharedFolder:   共享目录
+        -->
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="MP_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="MP_A" type="BP" outerIP="192.168.100.162" port="2220" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+
+        <!--
+            <ExistEp>:      已存在节点
+            <AddEp>:        待新增节点
+            <DeleteEp>:     待删除节点
+            <RebuildEp>:    待重建节点
+            <ShadowEp>:     待影实转换节点
+            <SwitchEp>:     待主备切换节点
+
+            id:                     节点ID
+            mainframeID:            节点所在主机ID，通过ID指定部署该节点的主机，必须为<Mainframes>中配置的主机
+            workingDirectory:       节点部署的工作目录，缺省值为部署该节点的主机的工作目录
+            name:                   节点实例名
+            type:                   节点类型，可选值 SP | MP | BP
+            port:                   节点监听端口，dm.ini参数PORT_NUM
+            xmalHost:               节点内网IP
+            apPort:                 AP_PORT_NUM
+            mpPort:                 MP_PORT，仅MP需要配置
+            raftSelfId:             dmarch.ini参数RAFT_SELF_ID
+            selfCenterId:           dmarch.ini参数SELF_CENTER_ID
+            shadow:                 节点是否为影子节点
+            startCmd/serviceName:   节点启动命令/节点服务名，取决去是否注册服务，二者取一
+            autoRestart:            是否开启自动拉起
+            userName:               节点登录连接用户名，加密保存
+            password:               节点登录连接密码，加密保存
+
+            <ExistEp>补充参数
+                xmalHbInterval:     dmarch.ini参数XMAL_HB_INTERVAL
+                raftHbInterval:     dmarch.ini参数RAFT_HB_INTERVAL
+                raftVoteInterval:   dmarch.ini参数RAFT_VOTE_INTERVAL
+        -->
+        <ExistEp id="144116886291330560" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="MP_A" type="MP" port="2220" 
+            apPort="2620" mpPort="2000" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceMP_A.sh start" 
+            autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330589" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="MP_B" type="MP" port="2221" 
+            apPort="2621" mpPort="2001" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceMP_B.sh start" 
+            autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330617" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="MP_C" type="MP" port="2222" 
+            apPort="2622" mpPort="2002" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceMP_C.sh start" 
+            autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+
+        <!-- <DeleteEp>待删除实例只填写节点实例名，根据实例名在<ExistEp>中匹配 -->
+        <DeleteEp name="MP_C"/>
+
+        <!-- <AddEp> -->
+        <AddEp id="3224624313409684" mainframeID="72313097870422812" name="BP2_A" type="BP" port="2243" xmalHost="192.168.100.162" 
+            apPort="2643" raftSelfId="0" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+
+            <!-- 初始化库参数,可使用@InitParamTemplate引用<InitParamTemplate>标签中的内容并在其后追加或覆盖参数,也可单独配置参数 -->
+            <InitParam>@InitParamTemplate</InitParam>
+
+            <!-- 库配置文件dm.ini参数,可使用@DmIniTemplate引用<DmInit>标签中的内容并在其后追加或覆盖参数，也可单独配置参数 -->
+            <DmIni></DmIni>
+
+            <!-- dmarch.ini参数,在@DmArchIniTemplate之后覆盖指定参数,仅当archIni=true时生效 -->
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=1000
+                RAFT_SELF_ID=0
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+
+        <!-- <RebuildEp> -->
+        <RebuildEp id="144116886291330701" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="-1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false"
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni> <!-- 省略内容，全部文件内容 --> </DmIni>
+            <DmArchIni> <!-- 省略内容，全部文件内容 --> </DmArchIni>
+            <!-- <RebuildSourceEp>待重建实例的源实例只填写节点实例名，根据实例名在<ExistEp>中匹配 -->
+            <RebuildSourceEp name="BP1_C"/>
+        </RebuildEp>
+
+        <!-- <ShadowEp> -->
+        <ShadowEp id="144116886363482021" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="-1" selfCenterId="0" shadow="true" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F" shadowIniPath="/DMDeploy/dmdpc/BP1_C/DAMENG/dm.ini">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni> <!-- 省略内容，全部文件内容 --> </DmIni>
+            <DmArchIni> <!-- 省略内容，全部文件内容 --> </DmArchIni>
+            <!--
+                <ShadowSourceEp>:  待影实转换实例的源实例
+                name:               节点实例名，根据实例名在<ExistEp>中匹配
+                shadowIniPath:      dm.ini地址
+            -->
+            <ShadowSourceEp name="BP1_C" shadowIniPath="/DMDeploy/dmdpc/BP1_C/DAMENG/dm.ini"/>
+        </ShadowEp>
+    </Raft>
+
+    <!-- 无操作 -->
+    <Raft name="RAFT1" operation="NULL">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_C" type="BP" outerIP="192.168.100.162" port="2242" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <ExistEp id="144116886271856672" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886287680452" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886287680480" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+    </Raft>
+
+    <!-- 新增RAFT组 -->
+    <Raft name="RAFT_2" operation="NEW">
+        <DbUrls/>
+        <AddEp id="3224624313409684" mainframeID="72313097870422812" name="BP2_A" type="BP" port="2243" xmalHost="192.168.100.162" 
+            apPort="2643" raftSelfId="0" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=1000
+                RAFT_SELF_ID=0
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+        <AddEp id="8661692167696915" mainframeID="72313097870422812" name="BP2_B" type="BP" port="2244" xmalHost="192.168.100.162" 
+            apPort="2644" raftSelfId="1" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=2000
+                RAFT_SELF_ID=1
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+        <AddEp id="2599694542065561" mainframeID="72313097870422812" name="BP2_C" type="BP" port="2245" xmalHost="192.168.100.162" 
+            apPort="2645" raftSelfId="2" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=3000
+                RAFT_SELF_ID=2
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+    </Raft>
+
+    <!-- 删除RAFT组 -->
+    <Raft name="RAFT_2" operation="DEL">
+        <DbUrls/>
+        <ExistEp id="144116886357777979" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP2_A" type="BP" port="2243" 
+            apPort="2643" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP2_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886357778004" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP2_B" type="BP" port="2244" 
+            apPort="2644" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP2_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886357778038" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP2_C" type="BP" port="2245" 
+            apPort="2645" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP2_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <DeleteEp name="BP2_A"/>
+        <DeleteEp name="BP2_B"/>
+        <DeleteEp name="BP2_C"/>
+    </Raft>
+
+    <!-- 重建RAFT组 -->
+    <Raft name="RAFT_1" operation="REBUILD">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="BP1_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+        <ExistEp id="144116886291330645" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330672" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330701" mainframeID="72313097870422812" name="BP1_C" type="BP" port="2242" apPort="2642" raftSelfId="2" 
+            selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <RebuildEp id="144116886291330701" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="-1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false"
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni> <!-- 省略内容，全部文件内容 --> </DmIni>
+            <DmArchIni> <!-- 省略内容，全部文件内容 --> </DmArchIni>
+            <RebuildSourceEp name="BP1_C"/>
+        </RebuildEp>
+    </Raft>
+
+    <!-- 影实转换RAFT组 -->
+    <Raft name="RAFT_1" operation="SHADOW">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="BP1_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+        <ExistEp id="144116886363481968" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363481995" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363482021" mainframeID="72313097870422812" name="BP1_C" type="BP" port="2242" apPort="2642" raftSelfId="2" 
+            selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ShadowEp id="144116886363482021" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="-1" selfCenterId="0" shadow="true" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F" shadowIniPath="/DMDeploy/dmdpc/BP1_C/DAMENG/dm.ini">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni> <!-- 省略内容，全部文件内容 --> </DmIni>
+            <DmArchIni> <!-- 省略内容，全部文件内容 --> </DmArchIni>
+            <ShadowSourceEp name="BP1_C" shadowIniPath="/DMDeploy/dmdpc/BP1_C/DAMENG/dm.ini"/>
+        </ShadowEp>
+    </Raft>
+
+    <!-- 调整RAFT组，删一增一 -->
+    <Raft name="RAFT_1" operation="ADJUST">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="BP1_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+        <ExistEp id="144116886291330645" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330672" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886291330701" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2243" 
+            apPort="2643" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <DeleteEp name="BP1_C"/>
+        <AddEp id="7892570252579196" mainframeID="72313097870422812" name="BP1_D" type="BP" port="2242" xmalHost="192.168.100.162" apPort="2642" 
+            raftSelfId="3" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=4000
+                RAFT_SELF_ID=3
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+    </Raft>
+
+    <!-- 调整RAFT组，增 -->
+    <Raft name="RAFT_1" operation="ADJUST">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_C" type="BP" outerIP="192.168.100.162" port="2242" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="BP1_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+        <ExistEp id="144116886363481968" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363481995" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363482021" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <AddEp id="8442529789551281" mainframeID="72313097870422812" name="BP1_D" type="BP" port="2243" xmalHost="192.168.100.162" apPort="2643" 
+            raftSelfId="3" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=4000
+                RAFT_SELF_ID=3
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+        <AddEp id="459438186484148" mainframeID="72313097870422812" name="BP1_E" type="BP" port="2244" xmalHost="192.168.100.162" apPort="2644" 
+            raftSelfId="4" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=5000
+                RAFT_SELF_ID=4
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+    </Raft>
+
+    <!-- 调整RAFT组，删 -->
+    <Raft name="RAFT_1" operation="ADJUST">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_B" type="BP" outerIP="192.168.100.162" port="2241" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+            <DbUrl name="BP1_C" type="BP" outerIP="192.168.100.162" port="2242" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <ExistEp id="144116886271856672" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886287680452" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886287680480" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="2" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886288237300" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_D" type="BP" port="2243" 
+            apPort="2643" raftSelfId="3" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_D.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886288237330" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_E" type="BP" port="2244" 
+            apPort="2644" raftSelfId="4" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_E.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <DeleteEp name="BP1_D"/>
+        <DeleteEp name="BP1_E"/>
+    </Raft>
+
+    <!-- 升级RAFT组 -->
+    <Raft name="RAFT_1" operation="UPGRADE">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <BackupsetSource type="ONLINE" agentOuterIP="192.168.100.162" agentPort="7664" binPath="/DMDeploy/dmdpc/bin" dbName="BP1_A" 
+            backupParams="MAXPIECESIZE 1024 COMPRESSED TASK THREAD 4 PARALLEL 4" shareFolder="false">
+            <DbUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </BackupsetSource>
+        <ExistEp id="144116886363481968" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F" xmalHbInterval="5" raftHbInterval="150" raftVoteInterval="1000"/>
+        <AddEp id="1683640181378710" mainframeID="72313097870422812" name="BP1_B" type="BP" port="2241" xmalHost="192.168.100.162" apPort="2641" 
+            raftSelfId="1" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=2000
+                RAFT_SELF_ID=1
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+        <AddEp id="4460755777464938" mainframeID="72313097870422812" name="BP1_C" type="BP" port="2242" xmalHost="192.168.100.162" apPort="2642" 
+            raftSelfId="2" selfCenterId="0" shadow="false" autoRestart="false" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F">
+            <InitParam>@InitParamTemplate</InitParam>
+            <DmIni></DmIni>
+            <DmArchIni>
+                ARCH_WAIT_APPLY=0
+                ARCH_RESERVE_TIME=0
+                XMAL_HB_INTERVAL=5
+                RAFT_HB_INTERVAL=150
+                RAFT_VOTE_INTERVAL=3000
+                RAFT_SELF_ID=2
+                SELF_CENTER_ID=0
+                LOCAL_ARCH_DEST=
+                LOCAL_ARCH_FILE_SIZE=128
+                LOCAL_ARCH_SPACE_LIMIT=0
+                LOCAL_ARCH_FLUSH_BUF_SIZE=0
+            </DmArchIni>
+        </AddEp>
+    </Raft>
+
+    <!-- 降级RAFT组 -->
+    <Raft name="RAFT_1" operation="DEGRADE">
+        <DbUrls>
+            <PrimaryUrl name="BP1_A" type="BP" outerIP="192.168.100.162" port="2240" userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        </DbUrls>
+        <ExistEp id="144116886363481968" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_A" type="BP" port="2240" 
+            apPort="2640" raftSelfId="0" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_A.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363481995" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_B" type="BP" port="2241" 
+            apPort="2641" raftSelfId="1" selfCenterId="0" shadow="false" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_B.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <ExistEp id="144116886363482021" mainframeID="72313097870422812" workingDirectory="/DMDeploy" name="BP1_C" type="BP" port="2242" 
+            apPort="2642" raftSelfId="2" selfCenterId="0" shadow="true" startCmd="/DMDeploy/dmdpc/bin/DmServiceBP1_C.sh start" autoRestart="false" 
+            userName="F1A54AF6DA530F3F" password="F1A54AF6DA530F3F"/>
+        <DeleteEp name="BP1_B"/>
+        <DeleteEp name="BP1_C"/>
+    </Raft>
+
+    <Service enable="false">
+        DmServiceInfix=
+        DmAPServicePostfix=
+        DmWatcherServiceInfix=
+        DmMonitorServicePostfix=
+        DmMPServiceInfix=
+        DmSPServiceInfix=
+        DmBPServiceInfix=
+        DmCSSServiceInfix=
+        DmASMServiceInfix=
+        DmCSSMServicePostfix=
+    </Service>
+
+    <DmKey/>
+    <SSL fileDir="" password=""/>
+    <DmServers needCheck="false"/>
+</Deploy>

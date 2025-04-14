@@ -1,0 +1,5 @@
+-- =============================================
+-- revoke system access from role 
+-- =============================================
+revoke ADMIN OPTION FOR<system_access, ,CREATE ROLE> 
+from  <role_name, sysname, "test_role">;

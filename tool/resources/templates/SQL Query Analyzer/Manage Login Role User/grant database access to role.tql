@@ -1,0 +1,6 @@
+-- =============================================
+-- grant database access to role 
+-- =============================================
+grant <database_access, ,INSERT> 
+on <table_or_view_name,sysname,test>
+to  <role_name, sysname, "test_role">;
