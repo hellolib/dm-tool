@@ -1,5 +1,24 @@
 '\" t
 .\" Copyright (c) 1998, 2014, Oracle and/or its affiliates. All rights reserved.
+.\" DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+.\"
+.\" This code is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License version 2 only, as
+.\" published by the Free Software Foundation.
+.\"
+.\" This code is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" version 2 for more details (a copy is included in the LICENSE file that
+.\" accompanied this code).
+.\"
+.\" You should have received a copy of the GNU General Public License version
+.\" 2 along with this work; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+.\"
+.\" Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+.\" or visit www.oracle.com if you need additional information or have any
+.\" questions.
 .\"
 .\" Title: jarsigner
 .\" Language: Japanese
@@ -7,8 +26,8 @@
 .\" SectDesc: セキュリティ・ツール
 .\" Software: JDK 8
 .\" Arch: 汎用
-.\" Part Number: E58104-01
-.\" Doc ID: JSSOR
+.\" Part Number: E58103-01
+.\" Doc ID: JSSON
 .\"
 .if n .pl 99999
 .TH "jarsigner" "1" "2013年11月21日" "JDK 8" "セキュリティ・ツール"
@@ -325,7 +344,7 @@ SHA256と楕円曲線デジタル署名アルゴリズム(ECDSA)を使用した�
 .PP
 これら2つのファイルのベース・ファイル名は、\fB\-sigFile\fRオプションの値から作成されます。たとえば、オプションが\fB\-sigFile MKSIGN\fRの場合、ファイルは\fBMKSIGN\&.SF\fRおよび\fBMKSIGN\&.DSA\fRという名前になります。
 .PP
-コマンドラインで\fB\-sigfile\fRオプションを指定しなかった場合、\fB\&.SF\fRファイルと\fB\&.DSA\fRファイルのベース・ファイル名は、コマンドラインで指定された別名の先頭の8文字をすべて大文字に変換したものになります。別名が8文字未満の場合は、別名がそのまま使用されます。別名に、署名ファイル名で使用できない文字が含まれている場合、ファイル名の作成時に、該当する文字が下線(_)文字に変換されます。有効な文字は、アルファベット、数字、下線およびハイフンです。
+コマンド行で\fB\-sigfile\fRオプションを指定しなかった場合、\fB\&.SF\fRファイルと\fB\&.DSA\fRファイルのベース・ファイル名は、コマンド行で指定された別名の先頭の8文字をすべて大文字に変換したものになります。別名が8文字未満の場合は、別名がそのまま使用されます。別名に、署名ファイル名で使用できない文字が含まれている場合、ファイル名の作成時に、該当する文字がアンダースコア(_)文字に変換されます。有効な文字は、アルファベット、数字、アンダースコアおよびハイフンです。
 .PP
 署名ファイル
 .PP
@@ -645,9 +664,9 @@ JARファイルが複数回署名されている場合、そのJARファイル�
 .RS 4
 生成された\fB\&.SF\fRファイルおよび\fB\&.DSA\fRファイルに使用するベース・ファイル名を指定します。たとえば、ファイルが\fBDUKESIGN\fRの場合、生成される\fB\&.SF\fRおよび\fB\&.DSA\fRファイルは、\fBDUKESIGN\&.SF\fRおよび\fBDUKESIGN\&.DSA\fRという名前で、署名付きJARファイルの\fBMETA\-INF\fRディレクトリに格納されます。
 .sp
-ファイル内の文字は、セット\fBa\-zA\-Z0\-9_\-\fRから指定される必要があります。アルファベット、数字、下線およびハイフン文字のみを使用できます。\fB\&.SF\fRおよび\fB\&.DSA\fRのファイル名では、小文字はすべて大文字に変換されます。
+ファイル内の文字は、セット\fBa\-zA\-Z0\-9_\-\fRから指定される必要があります。アルファベット、数字、アンダースコアおよびハイフン文字のみを使用できます。\fB\&.SF\fRおよび\fB\&.DSA\fRのファイル名では、小文字はすべて大文字に変換されます。
 .sp
-コマンド行で\fB\-sigfile\fRオプションを指定しなかった場合、\fB\&.SF\fRファイルと\fB\&.DSA\fRファイルのベース・ファイル名は、コマンド行で指定された別名の先頭の8文字をすべて大文字に変換したものになります。別名が8文字未満の場合は、別名がそのまま使用されます。別名に、署名ファイル名で無効な文字が含まれている場合、ファイル名を作成するために、該当する文字が下線(_)文字に変換されます。
+コマンド行で\fB\-sigfile\fRオプションを指定しなかった場合、\fB\&.SF\fRファイルと\fB\&.DSA\fRファイルのベース・ファイル名は、コマンド行で指定された別名の先頭の8文字をすべて大文字に変換したものになります。別名が8文字未満の場合は、別名がそのまま使用されます。別名に、署名ファイル名で無効な文字が含まれている場合、ファイル名を作成するために、該当する文字がアンダースコア(_)文字に変換されます。
 .RE
 .PP
 \-sigalg \fIalgorithm\fR
@@ -750,7 +769,7 @@ Oracle PKCS #11プロバイダの場合、\fIproviderName\fRは\fBSunPKCS11\-\fR
 .PP
 \-J\fIjavaoption\fR
 .RS 4
-指定された\fIjavaoption\fR文字列をJavaインタプリタに直接渡します。\fBjarsigner\fRコマンドは、インタプリタに対するラッパーです。このオプションには、空白を含めることはできません。このオプションは、実行環境またはメモリー使用を調整する場合に便利です。指定できるインタプリタ・オプションを一覧表示するには、コマンドラインで\fBjava \-h\fRまたは\fBjava \-X\fRと入力してください。
+指定された\fIjavaoption\fR文字列をJavaインタプリタに直接渡します。\fBjarsigner\fRコマンドは、インタプリタに対するラッパーです。このオプションには、空白を含めることはできません。このオプションは、実行環境またはメモリー使用を調整する場合に便利です。指定できるインタプリタ・オプションを一覧表示するには、コマンド行で\fBjava \-h\fRまたは\fBjava \-X\fRと入力してください。
 .RE
 .PP
 \-tsa \fIurl\fR

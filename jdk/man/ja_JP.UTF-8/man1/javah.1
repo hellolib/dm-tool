@@ -1,5 +1,24 @@
 '\" t
 .\" Copyright (c) 1994, 2014, Oracle and/or its affiliates. All rights reserved.
+.\" DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+.\"
+.\" This code is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License version 2 only, as
+.\" published by the Free Software Foundation.
+.\"
+.\" This code is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" version 2 for more details (a copy is included in the LICENSE file that
+.\" accompanied this code).
+.\"
+.\" You should have received a copy of the GNU General Public License version
+.\" 2 along with this work; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+.\"
+.\" Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+.\" or visit www.oracle.com if you need additional information or have any
+.\" questions.
 .\"
 .\" Title: javah
 .\" Language: Japanese
@@ -7,8 +26,8 @@
 .\" SectDesc: 基本ツール
 .\" Software: JDK 8
 .\" Arch: 汎用
-.\" Part Number: E58104-01
-.\" Doc ID: JSSOR
+.\" Part Number: E58103-01
+.\" Doc ID: JSSON
 .\"
 .if n .pl 99999
 .TH "javah" "1" "2013年11月21日" "JDK 8" "基本ツール"
@@ -58,7 +77,7 @@ Cヘッダーとソース・ファイルに変換されるクラスの完全修�
 .PP
 \fBjavah\fRコマンドは、ネイティブ・メソッドを実装するために必要なCヘッダーとソース・ファイルを生成します。作成されたヘッダーとソース・ファイルは、ネイティブ・ソース・コードからオブジェクトのインスタンス変数を参照するためにCプログラムによって使用されます。\fB\&.h\fRファイルは、対応するクラスと一致する配置を持つ\fBstruct\fR定義を含みます。\fBstruct\fRのフィールドは、クラスのインスタンス変数に対応します。
 .PP
-ヘッダー・ファイルとその中で宣言される構造体の名前はクラスの名前から派生します。\fBjavah\fRコマンドに渡されるクラスがパッケージの中にある場合、パッケージ名はヘッダー・ファイル名と構造体名の両方の先頭に付加されます。下線(_)が名前の区切り文字として使用されます。
+ヘッダー・ファイルとその中で宣言される構造体の名前はクラスの名前から派生します。\fBjavah\fRコマンドに渡されるクラスがパッケージの中にある場合、パッケージ名はヘッダー・ファイル名と構造体名の両方の先頭に付加されます。アンダースコア(_)が名前の区切り文字として使用されます。
 .PP
 デフォルトでは\fBjavah\fRコマンドは、コマンド行にリストされる各クラスのヘッダー・ファイルを作成し、現在のディレクトリにファイルを置きます。ソース・ファイルを作成するには、\fB\-stubs\fRオプションを使用してください。1つのファイルの中に、リストされたすべてのクラスの結果を連結するには、\fB\-o\fRオプションを使用してください。
 .PP
@@ -67,7 +86,7 @@ Java Native Interface (JNI)はヘッダー情報またはスタブ・ファイ�
 .PP
 \-o \fIoutputfile\fR
 .RS 4
-コマンドラインにリストされたすべてのクラスに対して、結果のヘッダーまたはソース・ファイルを連結して出力ファイルに格納します。\fB\-o\fRまたは\fB\-d\fRのどちらかのみ使用できます。
+コマンド行にリストされたすべてのクラスに対して、結果のヘッダーまたはソース・ファイルを連結して出力ファイルに格納します。\fB\-o\fRまたは\fB\-d\fRのどちらかのみ使用できます。
 .RE
 .PP
 \-d \fIdirectory\fR

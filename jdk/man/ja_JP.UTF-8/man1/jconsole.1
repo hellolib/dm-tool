@@ -1,5 +1,24 @@
 '\" t
 .\" Copyright (c) 2004, 2014, Oracle and/or its affiliates. All rights reserved.
+.\" DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+.\"
+.\" This code is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License version 2 only, as
+.\" published by the Free Software Foundation.
+.\"
+.\" This code is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" version 2 for more details (a copy is included in the LICENSE file that
+.\" accompanied this code).
+.\"
+.\" You should have received a copy of the GNU General Public License version
+.\" 2 along with this work; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+.\"
+.\" Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+.\" or visit www.oracle.com if you need additional information or have any
+.\" questions.
 .\"
 .\" Title: jconsole
 .\" Language: Japanese
@@ -7,8 +26,8 @@
 .\" SectDesc: Javaトラブルシューティング、プロファイリング、モニタリングおよび管理ツール
 .\" Software: JDK 8
 .\" Arch: 汎用
-.\" Part Number: E58104-01
-.\" Doc ID: JSSOR
+.\" Part Number: E58103-01
+.\" Doc ID: JSSON
 .\"
 .if n .pl 99999
 .TH "jconsole" "1" "2013年11月21日" "JDK 8" "Javaトラブルシューティング、プロファイリング、モニタリン"
@@ -32,7 +51,7 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "名前"
-jconsole \- Javaアプリケーションを監視および管理するためのグラフィカル・コンソールを開始します。
+jconsole \- Javaアプリケーションをモニターおよび管理するためのグラフィカル・コンソールを開始します。
 .SH "概要"
 .sp
 .if n \{\
@@ -62,7 +81,7 @@ http://docs\&.oracle\&.com/javase/8/docs/api/javax/management/remote/JMXServiceU
 .RE
 .SH "説明"
 .PP
-\fBjconsole\fRコマンドは、ローカル・マシンまたはリモート・マシン上のJavaアプリケーションと仮想マシンの監視と管理を行うグラフィカル・コンソール・ツールを起動します。
+\fBjconsole\fRコマンドは、ローカル・マシンまたはリモート・マシン上のJavaアプリケーションと仮想マシンのモニターと管理を行うグラフィカル・コンソール・ツールを起動します。
 .PP
 Windows上では、\fBjconsole\fRコマンドはコンソール・ウィンドウと関連付けられていません。ただし、\fBjconsole\fRコマンドが失敗すると、エラー情報を示すダイアログ・ボックスが表示されます。
 .SH "オプション"
@@ -74,7 +93,7 @@ Windows上では、\fBjconsole\fRコマンドはコンソール・ウィンド�
 .PP
 \-notile
 .RS 4
-最初にウィンドウをタイリングしません(複数接続の場合)。
+最初にウィンドウをタイル表示しません(複数接続の場合)。
 .RE
 .PP
 \-pluginpath \fIplugins\fR

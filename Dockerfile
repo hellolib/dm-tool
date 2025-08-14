@@ -1,6 +1,6 @@
-FROM hub.deepin.com/public/uniteos:2021-slim
+FROM ubuntu:24.04
 
-# Install Java and X11/GTK dependencies
+# Install X11/GTK dependencies
 # 安装相关依赖
 RUN apt-get update && apt-get install -y \
     libgtk2.0-0 \
@@ -21,7 +21,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /app/tool/analyzer
 RUN chmod +x /app/tool/console
 RUN chmod +x /app/tool/dbca.sh
-RUN chmod +x /app/tool/disql
 RUN chmod +x /app/tool/dmservice.sh
 RUN chmod +x /app/tool/dts
 RUN chmod +x /app/tool/dts_cmd_run.sh

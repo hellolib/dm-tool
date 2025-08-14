@@ -1,5 +1,24 @@
 '\" t
 .\" Copyright (c) 1994, 2014, Oracle and/or its affiliates. All rights reserved.
+.\" DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+.\"
+.\" This code is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License version 2 only, as
+.\" published by the Free Software Foundation.
+.\"
+.\" This code is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" version 2 for more details (a copy is included in the LICENSE file that
+.\" accompanied this code).
+.\"
+.\" You should have received a copy of the GNU General Public License version
+.\" 2 along with this work; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+.\"
+.\" Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+.\" or visit www.oracle.com if you need additional information or have any
+.\" questions.
 .\"
 .\" Title: javac
 .\" Language: Japanese
@@ -7,8 +26,8 @@
 .\" SectDesc: 基本ツール
 .\" Software: JDK 8
 .\" Arch: 汎用
-.\" Part Number: E58104-01
-.\" Doc ID: JSSOR
+.\" Part Number: E58103-01
+.\" Doc ID: JSSON
 .\"
 .if n .pl 99999
 .TH "javac" "1" "2015年3月3日" "JDK 8" "基本ツール"
@@ -80,7 +99,7 @@ javac \- Javaクラスおよびインタフェースの定義を読み取り、�
 .sp -1
 .IP \(bu 2.3
 .\}
-ソース・ファイルの数が少ない場合は、ファイル名をコマンドラインで指定します。
+ソース・ファイルの数が少ない場合は、ファイル名をコマンド行で指定します。
 .RE
 .sp
 .RS 4
@@ -659,7 +678,7 @@ deprecation
 .if n \{\
 .RE
 .\}
-メソッド\fBjava\&.util\&.Date\&.getDay\fRはJDK 1\&.1以降は推奨されていません。
+メソッド\fBjava\&.util\&.Date\&.getDay\fRはJDK 1\&.1以降は非推奨になりました。
 .RE
 .PP
 dep\-ann
@@ -813,7 +832,7 @@ overrides
 .PP
 path
 .RS 4
-コマンドラインでの無効なパス要素と存在しないパス・ディレクトリについて警告します(クラス・パス、ソース・パスなどのパス関連)。このような警告を\fB@SuppressWarnings\fR注釈で抑制することはできません。たとえば、次のようになります。
+コマンド行での無効なパス要素と存在しないパス・ディレクトリについて警告します(クラス・パス、ソース・パスなどのパス関連)。このような警告を\fB@SuppressWarnings\fR注釈で抑制することはできません。たとえば、次のようになります。
 .sp
 .if n \{\
 .RS 4
@@ -1217,7 +1236,7 @@ varargs
 .PP
 \fB\-proc:none\fRオプションによって注釈処理が無効化されない限り、コンパイラは使用可能なすべての注釈プロセッサを検索します。検索パスは、\fB\-processorpath\fRオプションを使用して指定できます。パスを指定しない場合、ユーザー・クラス・パスが使用されます。プロセッサの検索は、検索パス上の\fBMETA\-INF/services/javax\&.annotation\&.processing\fR\&.Processorという名前のサービス・プロバイダ構成ファイルに基づいて行われます。このようなファイルには、使用するすべての注釈プロセッサの名前を、1行に1つずつ含めてください。また、別の方法として、\fB\-processor\fRオプションを使用してプロセッサを明示的に指定することもできます。
 .PP
-コンパイラは、コマンドラインのソース・ファイルやクラスを走査することで、どのような注釈が存在しているかを確認し終わると、プロセッサに対して問合せを行い、それらのプロセッサがどの注釈を処理できるのかを確認します。一致するものが見つかった場合、そのプロセッサが呼び出されます。各プロセッサは、自身が処理する注釈を要求できます。その場合、それらの注釈に対する別のプロセッサを見つける試みは行われません。すべての注釈が要求されると、コンパイラはそれ以上プロセッサの検索を行いません。
+コンパイラは、コマンド行のソース・ファイルやクラスを走査することで、どのような注釈が存在しているかを確認し終わると、プロセッサに対して問合せを行い、それらのプロセッサがどの注釈を処理できるのかを確認します。一致するものが見つかった場合、そのプロセッサが呼び出されます。各プロセッサは、自身が処理する注釈を要求できます。その場合、それらの注釈に対する別のプロセッサを見つける試みは行われません。すべての注釈が要求されると、コンパイラはそれ以上プロセッサの検索を行いません。
 .PP
 いずれかのプロセッサによって新しいソース・ファイルが生成されると、注釈処理の2回目のラウンドが開始されます。新しく生成されたすべてのソース・ファイルがスキャンされ、前回と同様に注釈が処理されます。以前のラウンドで呼び出されたプロセッサはすべて、後続のどのラウンドでも呼び出されます。これが、新しいソース・ファイルが生成されなくなるまで続きます。
 .PP
@@ -1247,7 +1266,7 @@ varargs
 \fBjavac\fRコマンドは、\fBjavax\&.tools\fRパッケージ内のクラスとインタフェースによって定義される新しいJava Compiler APIをサポートします。
 .SS "例"
 .PP
-コマンドライン引数を指定するようにコンパイルするには、次の構文を使用します。
+コマンド行引数を指定するようにコンパイルするには、次の構文を使用します。
 .sp
 .if n \{\
 .RS 4

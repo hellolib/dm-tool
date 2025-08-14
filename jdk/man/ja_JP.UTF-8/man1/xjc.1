@@ -1,5 +1,24 @@
 '\" t
 .\" Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
+.\" DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+.\"
+.\" This code is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License version 2 only, as
+.\" published by the Free Software Foundation.
+.\"
+.\" This code is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" version 2 for more details (a copy is included in the LICENSE file that
+.\" accompanied this code).
+.\"
+.\" You should have received a copy of the GNU General Public License version
+.\" 2 along with this work; if not, write to the Free Software Foundation,
+.\" Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+.\"
+.\" Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+.\" or visit www.oracle.com if you need additional information or have any
+.\" questions.
 .\"
 .\" Title: xjc
 .\" Language: Japanese
@@ -7,8 +26,8 @@
 .\" SectDesc: Java Webサービス・ツール
 .\" Software: JDK 8
 .\" Arch: 汎用
-.\" Part Number: E58104-01
-.\" Doc ID: JSSOR
+.\" Part Number: E58103-01
+.\" Doc ID: JSSON
 .\"
 .if n .pl 99999
 .TH "xjc" "1" "2013年11月21日" "JDK 8" "Java Webサービス・ツール"
@@ -100,7 +119,7 @@ Using the XJC with Antを参照してください
 \-b \fIfile\fR
 .RS 4
 処理する外部バインディング・ファイルを1つまたは複数指定します。バインディング・ファイルごとに\fB\-b\fRスイッチを指定する必要があります。外部バインディング・ファイルの構文は柔軟です。複数のスキーマのカスタマイズが含まれる1つのバインディング・ファイルを使用したり、それらのカスタマイズを複数のバインディング・ファイルに分割したりできます。次に例を示します。\fBxjc schema1\&.xsd schema2\&.xsd schema3\&.xsd \-b bindings123\&.xjb\fR
-\fBxjc schema1\&.xsd schema2\&.xsd schema3\&.xsd \-b bindings1\&.xjb \-b bindings2\&.xjb \-b bindings3\&.xjb\fRまた、コマンドラインにスキーマ・ファイルとバインディング・ファイルを指定する順番は任意です。
+\fBxjc schema1\&.xsd schema2\&.xsd schema3\&.xsd \-b bindings1\&.xjb \-b bindings2\&.xjb \-b bindings3\&.xjb\fRまた、コマンド行にスキーマ・ファイルとバインディング・ファイルを指定する順番は任意です。
 .RE
 .PP
 \-d \fIdir\fR
@@ -110,12 +129,12 @@ Using the XJC with Antを参照してください
 .PP
 \-p \fIpkg\fR
 .RS 4
-このコマンドライン・オプションでターゲット・パッケージを指定した場合、その指定内容は、パッケージ名に対するすべてのバインディング・カスタマイズや、仕様で規定されているデフォルトのパッケージ名アルゴリズムよりも優先されます。
+このコマンド行オプションでターゲット・パッケージを指定した場合、その指定内容は、パッケージ名に対するすべてのバインディング・カスタマイズや、仕様で規定されているデフォルトのパッケージ名アルゴリズムよりも優先されます。
 .RE
 .PP
 \-httpproxy \fIproxy\fR
 .RS 4
-\fI[user[:password]@]proxyHost[:proxyPort]\fR形式でHTTPまたはHTTPSプロキシを指定します。古い\fB\-host\fRおよび\fB\-port\fRオプションは、下位互換性のために引き続きRIでサポートされますが、非推奨となりました。このオプションで指定されたパスワードは、topコマンドを使用する他のユーザーが表示できる引数です。セキュリティを高めるには、\fB\-httpproxyfile\fRを使用してください。
+\fI[user[:password]@]proxyHost[:proxyPort]\fR形式でHTTPまたはHTTPSプロキシを指定します。古い\fB\-host\fRおよび\fB\-port\fRオプションは、後方互換性のために引き続きRIでサポートされますが、非推奨となりました。このオプションで指定されたパスワードは、topコマンドを使用する他のユーザーが表示できる引数です。セキュリティを高めるには、\fB\-httpproxyfile\fRを使用してください。
 .RE
 .PP
 \-httpproxyfile file
